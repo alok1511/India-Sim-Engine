@@ -159,8 +159,10 @@ def _nanmean(a):
 
 
 def bands(res, var, qs=(5, 25, 50, 75, 95)):
+    import warnings
     X = res.panel(var)
-    with np.errstate(all="ignore"):
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)   # GDP is quarterly: non-quarter months are all-NaN by design
         return {q: np.nanpercentile(X, q, axis=0) for q in qs}
 
 
