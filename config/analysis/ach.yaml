@@ -1,0 +1,17 @@
+# Analysis of Competing Hypotheses: why is Brent ~USD117 (Oct 2026), and how durable is it?
+# Scores: CC (very consistent) C (consistent) N (neutral/not applicable) I (inconsistent) II (very inconsistent).
+# Diagnostic value comes from evidence that DISCRIMINATES. Scores are NOT converted to probabilities.
+version: ach-0.1
+question: "What is driving Brent at ~USD117 in late October 2026, and which driver should anchor the scenario set?"
+hypotheses:
+  H1: {name: "Physical supply disruption (Gulf infrastructure / Hormuz)", scenario: oil_escalation}
+  H2: {name: "Precautionary risk premium without large lost barrels", scenario: reference}
+  H3: {name: "Demand-led tightness (strong global growth)", scenario: global_tightening}
+  H4: {name: "Financial positioning / speculative overshoot", scenario: ceasefire}
+evidence:
+  - {id: EV1, item: "Houthi attacks in Saudi Arabia on 23 Oct; Brent +3% to 116.72 (E15)", date: "2026-10-23", H1: CC, H2: C, H3: N, H4: C, credibility: H}
+  - {id: EV2, item: "Saudi East-West pipeline shutdown and renewed US-Iran conflict cited by ICRA (E21)", date: "2026-09-26", H1: CC, H2: C, H3: I, H4: N, credibility: M}
+  - {id: EV3, item: "Brent fell to ~USD74 by 24 Jun once tankers transited Hormuz (E16)", date: "2026-06-24", H1: C, H2: CC, H3: II, H4: C, credibility: M}
+  - {id: EV4, item: "US 10Y near 5.2% after strong US data and hawkish Fed (E18)", date: "2026-09-28", H1: N, H2: N, H3: C, H4: I, credibility: M}
+  - {id: EV5, item: "Wide product cracks: OMC losses larger on diesel than petrol (E21)", date: "2026-09-26", H1: C, H2: N, H3: C, H4: I, credibility: M}
+  - {id: EV6, item: "Global risk-off: FPI outflows ~USD30bn YTD from India (E12)", date: "2026-10-08", H1: C, H2: C, H3: I, H4: N, credibility: M}

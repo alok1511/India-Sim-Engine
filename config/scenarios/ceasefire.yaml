@@ -1,0 +1,10 @@
+id: ceasefire
+name: Ceasefire / de-escalation (offset path)
+version: 1
+description: >
+  The baseline disruption regime is forced to end in Dec 2026 (month 2); markets reprice quickly.
+  Use to see which costs reverse and which persist (OMC recoupment, expectations, reserves).
+shocks:
+  - {type: oil_deescalation, start: 2}
+policies: {gov_fuel: freeze_omc_absorb, gov_fiscal: accommodate, rbi_mpc: inflation_targeting, rbi_fx: heavy, rbi_steril: half}
+structure: {expectations: adaptive, fx_regime: managed}

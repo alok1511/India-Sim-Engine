@@ -1,0 +1,27 @@
+# Key assumptions register. importance/uncertainty: H/M/L. test_param links to a sensitivity check.
+version: kar-0.1
+items:
+  - {id: KA-01, assumption: "The Gulf disruption regime ends at ~12%/month (median ~6 months)", importance: H, uncertainty: H,
+     evidence: "Iran war since Mar 2026; Apr ceasefire did not hold; renewed Houthi attacks 23 Oct (E15, E16, E21)",
+     if_false: "If persistent, reserves, OMC losses and core inflation compound well beyond model medians", test_param: baseline_hazard}
+  - {id: KA-02, assumption: "Pump prices stay frozen and OMCs absorb losses (status quo)", importance: H, uncertainty: M,
+     evidence: "ICRA: retail unchanged, OMC margins -8/-9 Rs/l in Sep 2026 (E21); Delhi prices 102.12/95.20 on 17 Oct (E22)",
+     if_false: "Pass-through moves the cost to households: CPI +3-4pp in the escalation case; OMC losses close", test_param: null}
+  - {id: KA-03, assumption: "RBI keeps selling ~75% of FX pressure until reserves near ~8 months of imports", importance: H, uncertainty: M,
+     evidence: "Reserves fell ~USD51bn in 4 weeks to 734.6bn (E10, E12); RBI selling spot and using sell/buy swaps",
+     if_false: "Lighter intervention -> faster INR depreciation, more imported inflation, less reserve loss", test_param: res_floor_months}
+  - {id: KA-04, assumption: "Residual capital flows stay at the Q1 FY27 plug (-USD3.8bn/month)", importance: H, uncertainty: H,
+     evidence: "Plug derived from RBI Q1 BoP (E09). NOT MODELLED: RBI dollar-deposit window (~USD133bn, >1/3 already left) (E12)",
+     if_false: "Further deposit-window reversals add USD-bn-scale outflows not captured: a material downside gap", test_param: null}
+  - {id: KA-05, assumption: "FX market depth ~USD3bn of unabsorbed pressure per 1% move", importance: H, uncertainty: H,
+     evidence: "Illustrative; not estimated", if_false: "INR path scales roughly inversely with depth", test_param: fx_depth}
+  - {id: KA-06, assumption: "Inflation expectations update adaptively and can de-anchor after 3 months above 6%", importance: M, uncertainty: H,
+     evidence: "Judgmental; compare with the 'anchored' structure", if_false: "Anchored: lower core persistence and fewer hikes", test_param: null}
+  - {id: KA-07, assumption: "CPI weights food 0.37 / energy 0.08 / core 0.55 (base 2024 not verified)", importance: M, uncertainty: M,
+     evidence: "CPI base revised to 2024 (E13); weights not read", if_false: "Headline sensitivity to food and fuel scales with true weights", test_param: null}
+  - {id: KA-08, assumption: "Remittances rise with oil after ~6 months (Gulf incomes)", importance: M, uncertainty: H,
+     evidence: "Historical pattern; the current conflict may hurt Gulf economies instead", if_false: "Loses a CAD offset of ~USD0.2-0.4bn/month", test_param: remit_oil}
+  - {id: KA-09, assumption: "Escalation is a SUPPLY shock (world demand does not rise with oil)", importance: M, uncertainty: M,
+     evidence: "Houthi attacks on Saudi infrastructure; pipeline shutdown (E21)", if_false: "A demand-led oil rise would come with stronger exports and less growth damage", test_param: oil_gdem_beta}
+  - {id: KA-10, assumption: "Starting output gap +0.3% and synthetic pre-sample histories", importance: M, uncertainty: H,
+     evidence: "Q1 FY27 GDP 7.8% (E14); pre-sample monthly paths are synthetic", if_false: "Base effects in y/y CPI and GDP over the first 12 months are distorted", test_param: null}

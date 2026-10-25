@@ -1,0 +1,121 @@
+# Causal link dictionary. Every implemented link is referenced by ID in the engine and the trace.
+# kind: identity (accounting/arithmetic), rule (explicit actor or institutional rule),
+#       external (benchmarked to published estimate), judgmental, illustrative.
+# Links with implemented: false are CONCEPTUAL GAPS shown in the causal map as dashed lines.
+version: mech-0.3.0
+links:
+  - {id: M-OIL-01, src: [disrupt, esc, shock_oil_escalation, shock_oil_deescalation], dst: brent, kind: judgmental, lag: 0, implemented: true,
+     desc: "Supply-disruption regime raises the Brent anchor; Brent mean-reverts toward it (faster in a regime-change month).",
+     params: [oil_anchor, oil_disrupt_prem, oil_kappa], evidence: [E15, E16],
+     counter: "SPR releases, OPEC+ spare capacity, demand destruction", invalid: "Brent stays elevated after the regime is declared over"}
+  - {id: M-OIL-02, src: [gdem], dst: brent, kind: judgmental, lag: 0, implemented: true,
+     desc: "Demand-driven oil move: weaker world demand lowers the anchor.", params: [oil_gdem_beta], evidence: [],
+     counter: "Supply cuts in response to weak demand", invalid: "Oil and global activity decouple for long periods"}
+  - {id: M-OIL-03, src: [disrupt, esc], dst: crack, kind: illustrative, lag: 0, implemented: true,
+     desc: "Disruption widens product cracks and war-risk freight.", params: [crack_disrupt, freight_disrupt], evidence: [E21],
+     counter: "Refinery reruns", invalid: "Cracks fall during disruption"}
+  - {id: M-OIL-04, src: [esc], dst: shortfall, kind: illustrative, lag: 0, implemented: true,
+     desc: "Escalation scenario imposes a physical crude shortfall during its forced window.", params: [], evidence: [],
+     counter: "Alternative suppliers (Russia, Americas), strategic reserves", invalid: "No cargo delays reported"}
+  - {id: M-GLB-01, src: [shock_global_tightening, shock_oil_escalation, disrupt, esc], dst: risk_off, kind: judgmental, lag: 0, implemented: true,
+     desc: "Risk-off: elevated while a disruption regime lasts; scenario impulses add to it; AR(1) with correlated innovations.", params: [risk_rho, risk_sigma], evidence: [E12], counter: "Ceasefire; Fed easing", invalid: ""}
+  - {id: M-GLB-02, src: [shock_global_tightening], dst: us10y, kind: judgmental, lag: 0, implemented: true, desc: "US10Y mean-reverts to an anchor; scenario offsets shift it.", params: [us_anchor, us_kappa, us_sigma], evidence: [E18], counter: "", invalid: ""}
+  - {id: M-GLB-03, src: [shock_global_tightening], dst: gdem, kind: judgmental, lag: 0, implemented: true, desc: "World demand gap AR(1) with scenario offsets.", params: [gdem_rho, gdem_sigma], evidence: [], counter: "", invalid: ""}
+  - {id: M-GLB-04, src: [shock_food_supply], dst: food_shock, kind: judgmental, lag: 0, implemented: true, desc: "Food supply shock AR(1); starts from the Sep-2026 food spike and decays.", params: [food_rho, food_sigma], evidence: [E13], counter: "Imports, buffer-stock releases", invalid: ""}
+  - {id: M-EXT-01, src: [brent, freight, crude_vol], dst: crude_bill, kind: identity, lag: 0, implemented: true,
+     desc: "USD crude import bill = volume x bbl/tonne x (Brent + freight). Independent of INR.", params: [crude_vol0, bbl_per_t_crude], evidence: [E19],
+     counter: "Volume response; discounted Russian barrels (not modelled)", invalid: "n/a (arithmetic)"}
+  - {id: M-EXT-02, src: [brent, crack], dst: prod_exp, kind: identity, lag: 0, implemented: true,
+     desc: "Product exports rise with Brent and cracks: an offset to gross crude cost.", params: [prod_vol0, bbl_per_t_prod], evidence: [E19],
+     counter: "Export curbs / windfall taxes", invalid: "n/a"}
+  - {id: M-EXT-03, src: [brent], dst: other_energy, kind: illustrative, lag: 0, implemented: true,
+     desc: "LNG/LPG/product imports partly oil-indexed.", params: [other_energy0, other_energy_oilshare], evidence: [E19], counter: "", invalid: ""}
+  - {id: M-EXT-04, src: [crude_bill, prod_exp, other_energy], dst: oil_net, kind: identity, lag: 0, implemented: true,
+     desc: "Net oil balance = product exports - crude imports - other energy imports.", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: M-EXT-05, src: [gdem, inr, gap], dst: nonoil_bal, kind: judgmental, lag: 1, implemented: true,
+     desc: "Non-oil goods balance improves with world demand and (lagged) real depreciation; worsens with domestic activity.", params: [nonoil_gdem, nonoil_fx, nonoil_gap], evidence: [E05],
+     counter: "Gold imports surge in uncertainty (not modelled)", invalid: "Exports fall despite depreciation and stable demand"}
+  - {id: M-EXT-06, src: [gdem], dst: services, kind: judgmental, lag: 0, implemented: true, desc: "Services exports track world demand.", params: [services_gdem], evidence: [E06], counter: "", invalid: ""}
+  - {id: M-EXT-07, src: [brent], dst: remit, kind: judgmental, lag: 6, implemented: true,
+     desc: "OFFSET: higher oil raises Gulf incomes and remittances with a ~6-month lag. Weakened if the conflict disrupts Gulf economies.", params: [remit_oil], evidence: [E07],
+     counter: "Gulf activity disruption, expat departures", invalid: "Remittances fall while oil stays high"}
+  - {id: M-EXT-08, src: [us10y], dst: prim_inc, kind: judgmental, lag: 0, implemented: true, desc: "Higher global yields raise income outgo.", params: [prim_us], evidence: [E08], counter: "", invalid: ""}
+  - {id: M-EXT-09, src: [oil_net, nonoil_bal, services, remit, prim_inc], dst: ca, kind: identity, lag: 0, implemented: true,
+     desc: "Current account = oil net + non-oil goods + services + secondary income + primary income.", params: [], evidence: [E04], counter: "", invalid: ""}
+  - {id: M-CAP-01, src: [g10, us10y, risk_off, inr, gap, gdem], dst: fpi, kind: judgmental, lag: 1, implemented: true,
+     desc: "Portfolio flows respond to the yield spread, risk appetite, recent depreciation (momentum) and growth.", params: [fpi_spread, fpi_risk, fpi_dep, fpi_gap], evidence: [E09, E12],
+     counter: "Index inclusion flows; valuation-driven buying", invalid: "Outflows persist despite risk-on and a wider spread"}
+  - {id: M-CAP-02, src: [us10y], dst: ecb_other, kind: judgmental, lag: 0, implemented: true, desc: "External borrowing deterred by higher US yields.", params: [ecb_us], evidence: [E09], counter: "", invalid: ""}
+  - {id: M-CAP-03, src: [fpi, ecb_other], dst: ka, kind: identity, lag: 0, implemented: true,
+     desc: "Capital account = FDI + FPI + ECB/other + residual (explicit plug incl. errors & omissions).", params: [fdi0, resid_other0], evidence: [E09], counter: "", invalid: ""}
+  - {id: M-FX-01, src: [ca, ka], dst: pressure, kind: identity, lag: 0, implemented: true,
+     desc: "Ex-ante FX pressure = -(CA + KA). A larger CAD is pressure only if not financed.", params: [], evidence: [], counter: "Capital inflows", invalid: ""}
+  - {id: M-FX-02, src: [pressure, reserves], dst: interv, kind: rule, lag: 0, implemented: true,
+     desc: "RBI absorbs a share of pressure (intensity choice), scaled down near the reserve floor.", params: [res_floor_months], evidence: [E10, E12],
+     counter: "Reserve-adequacy concerns", invalid: "RBI stops intervening at high reserve levels"}
+  - {id: M-FX-03, src: [pressure, interv, dxy], dst: inr, kind: illustrative, lag: 0, implemented: true,
+     desc: "Unabsorbed pressure moves INR by 1% per fx_depth USD bn, plus dollar-index pass-through and noise.", params: [fx_depth, fx_sigma], evidence: [],
+     counter: "Exporter conversion, forward-book use", invalid: "INR stable despite large unabsorbed pressure"}
+  - {id: M-FX-04, src: [interv, dxy], dst: reserves, kind: identity, lag: 0, implemented: true,
+     desc: "Reserves change = -intervention (BoP) + valuation effect from the dollar.", params: [res_nonusd_share], evidence: [E10], counter: "", invalid: ""}
+  - {id: M-FX-05, src: [pressure, interv], dst: fx_adjust, kind: identity, lag: 0, implemented: true,
+     desc: "BoP closure: price-induced balancing flows equal unabsorbed pressure so CA + KA + adjustment = change in reserves.", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: M-LIQ-01, src: [interv], dst: liq, kind: identity, lag: 0, implemented: true,
+     desc: "Dollar sales drain rupee liquidity one-for-one; sterilisation (OMO/VRR/swaps) offsets a chosen share.", params: [], evidence: [E10], counter: "", invalid: ""}
+  - {id: M-LIQ-02, src: [liq, repo], dst: wacr, kind: rule, lag: 0, implemented: true,
+     desc: "Overnight rate (WACR) moves within the SDF-MSF corridor with liquidity.", params: [liq_wacr], evidence: [E01], counter: "", invalid: ""}
+  - {id: M-FUEL-01, src: [brent, crack, freight, inr], dst: parity, kind: identity, lag: 0, implemented: true,
+     desc: "Import-parity cost of auto fuel (Rs/litre) = (Brent + crack + freight) x INR / 159.", params: [], evidence: [E21], counter: "", invalid: ""}
+  - {id: M-FUEL-02, src: [parity], dst: retail_fuel, kind: rule, lag: 0, implemented: true,
+     desc: "Government/OMC pricing choice sets the retail price, excise and any budget compensation.", params: [gov_loss_tolerance], evidence: [E20, E21, E22],
+     counter: "State elections, inflation optics", invalid: ""}
+  - {id: M-FUEL-03, src: [retail_fuel, excise, parity], dst: omc_margin, kind: identity, lag: 0, implemented: true,
+     desc: "OMC margin = retail/(1+VAT) - dealer margin - excise - parity cost; losses = shortfall x volume.", params: [vat_rate, dealer_margin, litres_month], evidence: [E21], counter: "", invalid: ""}
+  - {id: M-FUEL-04, src: [brent, inr], dst: lpg_loss, kind: illustrative, lag: 0, implemented: true, desc: "LPG under-recovery at a frozen cylinder price.", params: [lpg_cyl_month, lpg_price], evidence: [E21], counter: "", invalid: ""}
+  - {id: M-PRC-01, src: [retail_fuel], dst: energy_yoy, kind: identity, lag: 0, implemented: true,
+     desc: "Energy CPI moves with retail auto-fuel prices (share) plus administered items trend.", params: [energy_auto_share], evidence: [], counter: "", invalid: ""}
+  - {id: M-PRC-02, src: [food_shock, retail_fuel], dst: food_yoy, kind: judgmental, lag: 0, implemented: true,
+     desc: "Food inflation = trend + supply shock + transport-cost pass-through.", params: [food_trend, food_fuel], evidence: [E13], counter: "Imports, stock releases", invalid: ""}
+  - {id: M-PRC-03, src: [exp_infl, gap, inr, parity], dst: core_yoy, kind: external, lag: 1, implemented: true,
+     desc: "Core inflation: persistence + expectations + Phillips slope + ERPT + indirect oil costs.", params: [core_lambda, core_gap, core_fx, core_oil], evidence: [E24, E25],
+     counter: "Weak demand; margin compression", invalid: "Core stays flat after large INR and oil moves"}
+  - {id: M-PRC-04, src: [food_yoy, energy_yoy, core_yoy], dst: cpi_yoy, kind: identity, lag: 0, implemented: true, desc: "Headline CPI = weighted components (weights approximate).", params: [w_food, w_energy, w_core], evidence: [E13], counter: "", invalid: ""}
+  - {id: M-PRC-05, src: [cpi_yoy], dst: exp_infl, kind: judgmental, lag: 1, implemented: true,
+     desc: "Adaptive expectations; speed jumps if headline >6% for 3 months (de-anchoring regime) under the 'adaptive' structure.", params: [exp_theta, exp_theta_deanchor], evidence: [],
+     counter: "Credible RBI action", invalid: "Survey expectations ignore realised inflation"}
+  - {id: M-MPC-01, src: [cpi_yoy, gdp_yoy, exp_infl, inr], dst: repo, kind: rule, lag: 2, implemented: true,
+     desc: "MPC decides at bi-monthly meetings using only PUBLISHED data (CPI with 2-month availability lag, GDP quarterly +2 months).", params: [r_neutral, mpc_infl_coef, mpc_gap_coef, mpc_fx_trigger], evidence: [E01],
+     counter: "Growth concerns; global easing", invalid: "MPC reacts to unpublished data"}
+  - {id: M-FIS-01, src: [brent, omc_margin, excise, gap], dst: fd_proj, kind: identity, lag: 0, implemented: true,
+     desc: "Fiscal deficit = expenditure (base + fertiliser + interest + OMC compensation - capex cuts) - receipts (tax + fuel excise + other).", params: [tax_ratio, fert_oil], evidence: [E23], counter: "", invalid: ""}
+  - {id: M-FIS-02, src: [fd_proj], dst: capex_cut, kind: rule, lag: 1, implemented: true,
+     desc: "Under 'hold target', projected overrun is half-closed by capex cuts (capped at 25% of monthly capex).", params: [fis_capex_cut, capex_month], evidence: [E23], counter: "", invalid: ""}
+  - {id: M-FIS-03, src: [fd_proj], dst: debt, kind: identity, lag: 0, implemented: true, desc: "Debt stock accumulates the deficit (no valuation, no states).", params: [], evidence: [E23], counter: "", invalid: ""}
+  - {id: M-BOND-01, src: [repo, us10y, fd_proj, exp_infl], dst: g10, kind: judgmental, lag: 0, implemented: true,
+     desc: "10Y yield adjusts toward repo + term premium + US spillover + fiscal + expectations premia.", params: [g10_us, g10_fis, g10_exp], evidence: [E17, E18], counter: "Issuance cuts; RBI OMO purchases", invalid: ""}
+  - {id: M-REAL-01, src: [wacr, exp_infl], dst: gap, kind: judgmental, lag: 3, implemented: true, desc: "Higher real rates (vs t0) lower the output gap after ~3 months.", params: [a_rate], evidence: [], counter: "", invalid: ""}
+  - {id: M-REAL-02, src: [retail_fuel], dst: gap, kind: judgmental, lag: 0, implemented: true, desc: "Retail fuel increases squeeze household real income (one-off impulse that decays).", params: [a_hh_fuel, fuel_budget_share], evidence: [], counter: "Transfers", invalid: ""}
+  - {id: M-REAL-03, src: [omc_margin, lpg_loss], dst: gap, kind: judgmental, lag: 0, implemented: true, desc: "Uncompensated OMC losses (vs t0) defer PSU capex.", params: [a_omc], evidence: [E21], counter: "Budget compensation", invalid: ""}
+  - {id: M-REAL-04, src: [parity], dst: gap, kind: judgmental, lag: 0, implemented: true, desc: "Firms' input-cost squeeze from landed crude in rupees.", params: [a_input], evidence: [], counter: "", invalid: ""}
+  - {id: M-REAL-05, src: [gdem], dst: gap, kind: judgmental, lag: 0, implemented: true, desc: "External demand.", params: [a_gdem], evidence: [], counter: "", invalid: ""}
+  - {id: M-REAL-06, src: [risk_off], dst: gap, kind: judgmental, lag: 0, implemented: true, desc: "Confidence / financial conditions.", params: [a_risk], evidence: [], counter: "", invalid: ""}
+  - {id: M-REAL-07, src: [stress], dst: gap, kind: judgmental, lag: 0, implemented: true, desc: "Credit supply tightening.", params: [a_stress], evidence: [], counter: "", invalid: ""}
+  - {id: M-REAL-08, src: [food_shock], dst: gap, kind: judgmental, lag: 0, implemented: true, desc: "Rural real-income squeeze from food prices.", params: [a_food], evidence: [], counter: "", invalid: ""}
+  - {id: M-REAL-09, src: [capex_cut], dst: gap, kind: judgmental, lag: 0, implemented: true, desc: "Capex cuts lower demand (multiplier ~2.5 at central values).", params: [a_fiscal], evidence: [], counter: "", invalid: ""}
+  - {id: M-REAL-10, src: [shortfall], dst: gap, kind: judgmental, lag: 0, implemented: true, desc: "Physical fuel rationing.", params: [a_phys], evidence: [], counter: "", invalid: ""}
+  - {id: M-REAL-11, src: [gap], dst: gdp_yoy, kind: identity, lag: 0, implemented: true, desc: "Monthly activity index = potential x (1+gap); quarterly GDP y/y = 3-month average vs year-ago (explicit aggregation).", params: [pot_growth], evidence: [E14], counter: "", invalid: ""}
+  - {id: M-CRD-01, src: [wacr, gap, stress], dst: credit_yoy, kind: judgmental, lag: 0, implemented: true, desc: "Credit growth vs lending rate, activity and bank stress.", params: [credit_gap, credit_rate, credit_stress], evidence: [], counter: "", invalid: ""}
+  - {id: M-CRD-02, src: [wacr, exp_infl, gap], dst: stress, kind: judgmental, lag: 0, implemented: true, desc: "Debt-service stress rises with real lending rates and negative gaps (nonlinear: only negative gap).", params: [stress_rate, stress_gap], evidence: [], counter: "", invalid: ""}
+  - {id: M-PUB-01, src: [cpi_yoy, gdp_yoy], dst: published, kind: rule, lag: 2, implemented: true,
+     desc: "Publication calendar: CPI usable by decisions from month m+2; quarterly GDP from quarter-end +3; market data from m+1.", params: [], evidence: [], counter: "", invalid: ""}
+  # ---------------- conceptual gaps (NOT implemented) ----------------
+  - {id: G-01, src: [gap], dst: employment, kind: gap, lag: 0, implemented: false, desc: "Employment / labour market: only an activity proxy exists.", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: G-02, src: [retail_fuel], dst: state_finances, kind: gap, lag: 0, implemented: false, desc: "State VAT choices and state fiscal positions.", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: G-03, src: [gdem], dst: china_trade, kind: gap, lag: 0, implemented: false, desc: "China trade diversion, tariffs, supply chains.", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: G-04, src: [g10], dst: bank_balance_sheets, kind: gap, lag: 0, implemented: false, desc: "Bank MTM losses, NIM, capital; insurance and NBFC balance sheets.", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: G-05, src: [gap], dst: sectors_equity, kind: gap, lag: 0, implemented: false, desc: "Sector heterogeneity and equity markets.", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: G-06, src: [food_shock], dst: agri_output, kind: gap, lag: 0, implemented: false, desc: "Monsoon -> agricultural output (only via prices).", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: G-07, src: [brent], dst: opec_spr, kind: gap, lag: 0, implemented: false, desc: "Strategic OPEC+/SPR responses (only via hazard rates).", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: G-08, src: [inr], dst: gold_imports, kind: gap, lag: 0, implemented: false, desc: "Gold imports response to INR and uncertainty.", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: G-09, src: [interv], dst: forward_book, kind: gap, lag: 0, implemented: false, desc: "RBI forward book / NDF market; only spot intervention modelled.", params: [], evidence: [], counter: "", invalid: ""}
+  - {id: G-10, src: [cpi_yoy], dst: wages, kind: gap, lag: 0, implemented: false, desc: "Wage indexation and firm expectations.", params: [], evidence: [], counter: "", invalid: ""}

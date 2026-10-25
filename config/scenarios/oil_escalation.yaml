@@ -1,0 +1,13 @@
+id: oil_escalation
+name: Oil escalation - Strait of Hormuz disruption (supply shock)
+version: 1
+description: >
+  Escalation on top of the current regime from Nov 2026: Hormuz transit disrupted. Oil anchor
+  +USD40/bbl, freight +USD6, cracks +USD8, 3% physical crude shortfall for a forced 3 months,
+  after which the escalation layer ends with 20%/month hazard. Risk-off +1.0 sd on onset.
+  Shock type = SUPPLY disruption (not demand-led), so global demand does not rise with oil.
+shocks:
+  - {type: oil_escalation, start: 1, premium: 40.0, forced_months: 3, hazard_after: 0.20,
+     shortfall_pct: 3.0, freight_extra: 6.0, crack_extra: 8.0, risk_impulse: 1.0}
+policies: {gov_fuel: freeze_omc_absorb, gov_fiscal: accommodate, rbi_mpc: inflation_targeting, rbi_fx: heavy, rbi_steril: half}
+structure: {expectations: adaptive, fx_regime: managed}

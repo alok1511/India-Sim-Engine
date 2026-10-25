@@ -1,0 +1,19 @@
+# Premortem / red team: assume the analysis turned out badly wrong. Why?
+version: pm-0.1
+prompts:
+  - "It is October 2027 and INR is at 90, CPI at 4%, and growth 7.5%. What did the model miss?"
+  - "It is October 2027 and INR is at 115 and the RBI has used USD150bn. Which channel was underweighted?"
+  - "The 'best-looking' policy in the comparison failed in reality. Which cost was hidden from the model?"
+model_weaknesses:
+  - "BIAS TOWARD FISCAL ABSORPTION: the 10Y yield does not feed back into the output gap, and there is no sovereign-rating, crowding-out or financial-stability channel. 'Budget compensates OMCs' therefore looks cheaper for growth than it may be."
+  - "Capital flows are the weakest block: FPI coefficients and the residual plug are judgmental; the RBI dollar-deposit window reversal is not modelled."
+  - "FX depth is illustrative: INR paths scale with it. Treat INR levels as conditional, not predictive."
+  - "Single representative auto fuel and Delhi VAT; no state VAT responses, no LPG price changes."
+  - "No bank/NBFC/insurer balance sheets: a bond sell-off cannot create financial-stability feedback."
+  - "Pre-sample histories are synthetic: year-on-year CPI and GDP over the first 12 months carry artificial base effects."
+  - "Actors follow fixed rules; real policymakers mix options, communicate, and react to politics (state elections)."
+  - "Oil regime hazard is judgmental; diplomacy and military events are not modelled, only their price consequences."
+strongest_countercase:
+  - "India's starting buffers (USD735bn reserves, 4.3% deficit path, low CAD at 0.5% of GDP in Q1) may absorb even a severe shock with less depreciation than modelled, especially if remittances and services stay strong."
+missing_actors:
+  - "State governments (VAT), OPEC+/Saudi spare capacity, US Treasury/Fed swap lines, IMF, Russia (discounted crude), China (demand)."

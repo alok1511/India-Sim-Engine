@@ -1,0 +1,798 @@
+# adverse (P90 severity) path
+
+Run `4786742b623c` | path 666 | scenario `oil_escalation` | seed 20261025 | engine 0.3.0 | params params-0.3.0
+
+> EXPLORATORY SCENARIO PATH generated from the run log. No probability is attached to this single path.
+
+
+## 2026-11
+
+- **[shock]** 2026-11: Scenario shock: Hormuz escalation. Anchor +USD40/bbl, freight +6, cracks +8, 3% physical shortfall for 3 months; then 20%/month chance of ending. Type: SUPPLY disruption..
+  - id `2313560ef632:p666:t01:shock:oil_escalation:1`; parents 0; support: n/a (assumption)
+- **[regime]** 2026-11: Escalation layer (Hormuz) starts. Mechanism: M-OIL-01.
+  - id `2313560ef632:p666:t01:regime:esc:2`; parents 1; support: Low-Medium (judgmental hazard)
+- **[state_change]** 2026-11: Brent crude rises to 136.7 USD/bbl (from 116.7 in 2026-10). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - id `2313560ef632:p666:t01:state:brent:3`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2026-11: Crude import bill rises to 22.13 USD bn/month (from 18.95 in 2026-10). Main drivers: price (Brent+freight) +4.00, volume -0.81 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t01:state:crude_bill:4`; parents 1; support: High (arithmetic)
+- **[state_change]** 2026-11: Petroleum product exports rises to 7.06 USD bn/month (from 5.90 in 2026-10). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t01:state:prod_exp:5`; parents 1; support: High (arithmetic)
+- **[state_change]** 2026-11: Net oil balance falls to -18.26 USD bn/month (from -15.95 in 2026-10). Main drivers: crude_bill -3.18, prod_exp +1.17, other_energy -0.30 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t01:state:oil_net:6`; parents 2; support: High (arithmetic)
+- **[state_change]** 2026-11: Non-oil goods balance rises to -13.68 USD bn/month (from -14.50 in 2026-10). Mechanism: M-EXT-05. Could be interrupted by: Gold imports surge in uncertainty (not modelled).
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t01:state:nonoil_bal:7`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2026-11: Current account balance falls to -4.50 USD bn/month (from -3.15 in 2026-10). Main drivers: oil_net -2.31, nonoil_bal +0.82, services +0.19 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t01:state:ca:8`; parents 2; support: High (arithmetic)
+- **[state_change]** 2026-11: FX pressure (excess USD demand) rises to 6.23 USD bn/month (from 4.43 in 2026-10). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t01:state:pressure:9`; parents 1; support: High (arithmetic)
+- **[decision]** 2026-11: RBI sells USD 4.7bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(6.23), 'Reserves prior (USD bn)': np.float64(734.6)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.46 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t01:decision:fx:10`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2026-11: Fuel import-parity cost rises to 110.0 Rs/litre (from 88.5 in 2026-10). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t01:state:parity:11`; parents 1; support: High (arithmetic)
+- **[decision]** 2026-11: Fuel pricing: Freeze retail; OMCs absorb losses (status quo Oct 2026). Retail +0.00 Rs/l, excise +0.00 Rs/l, Budget compensation Rs0 crore. Mechanism: M-FUEL-02.
+  - Observed: {'Import parity (Rs/l)': np.float64(109.97), 'OMC margin if frozen (Rs/l)': np.float64(-31.88), 'Cumulative net OMC loss (Rs lakh cr)': np.float64(0.0)} | Choices: ['full_passthrough', 'freeze_omc_absorb', 'freeze_budget_comp', 'partial_50', 'excise_cut', 'adaptive_threshold'] | Chosen: freeze_omc_absorb | Constraints: excise floor 0 (headroom ~Rs1/l blended after Mar-2026 cut); LPG frozen in all options
+  - Expected response: CPI insulated; OMC balance sheets absorb losses; PSU capex at risk.
+  - id `2313560ef632:p666:t01:decision:gov_fuel:12`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2026-11: OMC marketing margin falls to -31.9 Rs/litre (from -10.4 in 2026-10). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t01:state:omc_margin:13`; parents 2; support: High (arithmetic)
+- **[state_change]** 2026-11: Output gap falls to -0.56 % of potential (from 0.30 in 2026-10). Main drivers: phys -0.45, input -0.19, noise -0.16 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t01:state:gap:14`; parents 3; support: Low-Medium (judgmental)
+
+## 2026-12
+
+- **[publication]** 2026-12: CPI for 2026-11 published: headline 5.54%, food 7.79%, core 4.47%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t02:pub:cpi:15`; parents 0; support: High (calendar)
+- **[decision]** 2026-12: MPC hikes repo 50bp to 6.00% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(5.51), 'Core CPI (latest published)': np.float64(4.43), 'Expectations (%)': np.float64(5.03), 'GDP (latest published, % y/y)': np.float64(7.5), '3m INR depreciation (%)': np.float64(0.65)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +50bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t02:decision:mpc:16`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2026-12: Brent crude rises to 146.0 USD/bbl (from 136.7 in 2026-11). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - id `2313560ef632:p666:t02:state:brent:17`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2026-12: Crude import bill rises to 23.25 USD bn/month (from 22.13 in 2026-11). Main drivers: price (Brent+freight) +1.40, volume -0.28 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t02:state:crude_bill:18`; parents 1; support: High (arithmetic)
+- **[state_change]** 2026-12: Net oil balance falls to -19.13 USD bn/month (from -18.26 in 2026-11). Main drivers: crude_bill -1.12, prod_exp +0.39, other_energy -0.14 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t02:state:oil_net:19`; parents 2; support: High (arithmetic)
+- **[state_change]** 2026-12: Remittances (net secondary income) falls to 13.28 USD bn/month (from 13.60 in 2026-10). Mechanism: M-EXT-07. Could be interrupted by: Gulf activity disruption, expat departures.
+  - id `2313560ef632:p666:t02:state:remit:20`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2026-12: Current account balance falls to -5.32 USD bn/month (from -4.50 in 2026-11). Main drivers: oil_net -0.87, nonoil_bal +0.33, remit -0.27 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t02:state:ca:21`; parents 3; support: High (arithmetic)
+- **[state_change]** 2026-12: Portfolio flows (FPI) falls to -4.04 USD bn/month (from -3.18 in 2026-10). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t02:state:fpi:22`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2026-12: FX pressure (excess USD demand) rises to 7.39 USD bn/month (from 6.23 in 2026-11). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t02:state:pressure:23`; parents 1; support: High (arithmetic)
+- **[decision]** 2026-12: RBI sells USD 5.5bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(7.39), 'Reserves prior (USD bn)': np.float64(730.4)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.54 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t02:decision:fx:24`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2026-12: Banking liquidity falls to 0.50 Rs lakh crore (from 1.00 in 2026-10). Mechanism: M-LIQ-01.
+  - id `2313560ef632:p666:t02:state:liq:25`; parents 1; support: High (arithmetic)
+- **[state_change]** 2026-12: Overnight rate (WACR) rises to 5.94 % (from 5.38 in 2026-10). Mechanism: M-LIQ-02.
+  - id `2313560ef632:p666:t02:state:wacr:26`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2026-12: Fuel import-parity cost rises to 114.6 Rs/litre (from 110.0 in 2026-11). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t02:state:parity:27`; parents 1; support: High (arithmetic)
+- **[state_change]** 2026-12: OMC marketing margin falls to -36.6 Rs/litre (from -31.9 in 2026-11). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t02:state:omc_margin:28`; parents 2; support: High (arithmetic)
+- **[state_change]** 2026-12: Output gap falls to -1.13 % of potential (from -0.56 in 2026-11). Main drivers: phys -0.39, noise -0.08, omc -0.05 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t02:state:gap:29`; parents 4; support: Low-Medium (judgmental)
+- **[state_change]** 2026-12: Credit stress index rises to 0.10 index (from 0.00 in 2026-10). Mechanism: M-CRD-02.
+  - id `2313560ef632:p666:t02:state:stress:30`; parents 2; support: Low-Medium (judgmental)
+
+## 2027-01
+
+- **[publication]** 2027-01: CPI for 2026-12 published: headline 5.62%, food 7.86%, core 4.58%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t03:pub:cpi:31`; parents 0; support: High (calendar)
+- **[state_change]** 2027-01: Brent crude falls to 136.0 USD/bbl (from 146.0 in 2026-12). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - id `2313560ef632:p666:t03:state:brent:32`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-01: Crude import bill falls to 21.71 USD bn/month (from 23.25 in 2026-12). Main drivers: price (Brent+freight) -1.50, volume -0.04 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t03:state:crude_bill:33`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-01: Net oil balance rises to -17.86 USD bn/month (from -19.13 in 2026-12). Main drivers: crude_bill +1.54, prod_exp -0.42, other_energy +0.15 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t03:state:oil_net:34`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-01: Non-oil goods balance rises to -12.81 USD bn/month (from -13.68 in 2026-11). Mechanism: M-EXT-05. Could be interrupted by: Gold imports surge in uncertainty (not modelled).
+  - id `2313560ef632:p666:t03:state:nonoil_bal:35`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-01: Current account balance rises to -3.59 USD bn/month (from -5.32 in 2026-12). Main drivers: oil_net +1.26, nonoil_bal +0.53, remit -0.10 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t03:state:ca:36`; parents 3; support: High (arithmetic)
+- **[state_change]** 2027-01: Portfolio flows (FPI) rises to -3.11 USD bn/month (from -4.04 in 2026-12). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t03:state:fpi:37`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-01: FX pressure (excess USD demand) falls to 4.79 USD bn/month (from 7.39 in 2026-12). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t03:state:pressure:38`; parents 1; support: High (arithmetic)
+- **[decision]** 2027-01: RBI sells USD 3.6bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(4.79), 'Reserves prior (USD bn)': np.float64(729.7)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.35 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t03:decision:fx:39`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-01: INR per USD rises to 97.74 INR/USD (from 97.00 in 2026-10). Main drivers: unabsorbed pressure +1.62, dollar index -1.31, noise +0.45 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t03:state:inr:40`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2027-01: Fuel import-parity cost falls to 109.6 Rs/litre (from 114.6 in 2026-12). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t03:state:parity:41`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-01: OMC marketing margin rises to -31.6 Rs/litre (from -36.6 in 2026-12). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t03:state:omc_margin:42`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-01: Core inflation rises to 4.74 % y/y (from 4.43 in 2026-10). Mechanism: M-PRC-03. Could be interrupted by: Weak demand; margin compression.
+  - id `2313560ef632:p666:t03:state:core_yoy:43`; parents 3; support: Medium (benchmarked to published estimates)
+- **[state_change]** 2027-01: Output gap falls to -1.38 % of potential (from -1.13 in 2026-12). Main drivers: phys -0.34, input +0.08, noise +0.06 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t03:state:gap:44`; parents 5; support: Low-Medium (judgmental)
+- **[state_change]** 2027-01: Credit stress index rises to 0.18 index (from 0.10 in 2026-12). Mechanism: M-CRD-02.
+  - id `2313560ef632:p666:t03:state:stress:45`; parents 2; support: Low-Medium (judgmental)
+
+## 2027-02
+
+- **[regime]** 2027-02: Escalation layer (Hormuz) ends. Mechanism: M-OIL-01.
+  - id `2313560ef632:p666:t04:regime:esc:46`; parents 1; support: Low-Medium (judgmental hazard)
+- **[publication]** 2027-02: CPI for 2027-01 published: headline 5.76%, food 8.03%, core 4.74%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t04:pub:cpi:47`; parents 0; support: High (calendar)
+- **[publication]** 2027-02: GDP for quarter ending 2026-12 published: 6.57% y/y. Mechanism: M-REAL-11.
+  - id `2313560ef632:p666:t04:pub:gdp:48`; parents 1; support: Medium (monthly activity proxy aggregated)
+- **[decision]** 2027-02: MPC hikes repo 25bp to 6.25% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(5.62), 'Core CPI (latest published)': np.float64(4.58), 'Expectations (%)': np.float64(5.08), 'GDP (latest published, % y/y)': np.float64(7.5), '3m INR depreciation (%)': np.float64(0.76)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +25bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t04:decision:mpc:49`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-02: Crude import bill falls to 20.52 USD bn/month (from 21.71 in 2027-01). Main drivers: price (Brent+freight) -1.84, volume +0.65 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t04:state:crude_bill:50`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-02: Petroleum product exports falls to 6.44 USD bn/month (from 7.06 in 2026-11). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t04:state:prod_exp:51`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-02: Net oil balance rises to -17.17 USD bn/month (from -17.86 in 2027-01). Main drivers: crude_bill +1.19, prod_exp -0.59, other_energy +0.09 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t04:state:oil_net:52`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-02: Portfolio flows (FPI) falls to -4.28 USD bn/month (from -3.11 in 2027-01). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t04:state:fpi:53`; parents 2; support: Low-Medium (judgmental)
+- **[state_change]** 2027-02: Capital account falls to -2.38 USD bn/month (from -1.28 in 2026-10). Main drivers: fpi -1.10, ecb_other +0.00, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t04:state:ka:54`; parents 1; support: High (arithmetic)
+- **[decision]** 2027-02: RBI sells USD 4.0bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(5.29), 'Reserves prior (USD bn)': np.float64(728.8)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.39 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t04:decision:fx:55`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-02: FX reserves falls to 724.02 USD bn (from 734.60 in 2026-10). Main drivers: intervention (BoP) -17.78, valuation +7.19 [exact (stock-flow identity)]. Mechanism: M-FX-04.
+  - id `2313560ef632:p666:t04:state:reserves:56`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-02: Banking liquidity falls to 0.13 Rs lakh crore (from 0.50 in 2026-12). Mechanism: M-LIQ-01.
+  - id `2313560ef632:p666:t04:state:liq:57`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-02: Overnight rate (WACR) rises to 6.23 % (from 5.94 in 2026-12). Mechanism: M-LIQ-02.
+  - id `2313560ef632:p666:t04:state:wacr:58`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-02: Fuel import-parity cost falls to 97.7 Rs/litre (from 109.6 in 2027-01). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t04:state:parity:59`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-02: OMC marketing margin rises to -19.6 Rs/litre (from -31.6 in 2027-01). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t04:state:omc_margin:60`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-02: Headline CPI inflation rises to 5.96 % y/y (from 5.51 in 2026-10). Main drivers: food +3.03, core +2.74, energy +0.20 [exact (base-weighted component contributions to the LEVEL of headline y/y)]. Mechanism: M-PRC-04.
+  - id `2313560ef632:p666:t04:state:cpi_yoy:61`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-02: Food inflation rises to 8.30 % y/y (from 7.74 in 2026-10). Mechanism: M-PRC-02. Could be interrupted by: Imports, stock releases.
+  - id `2313560ef632:p666:t04:state:food_yoy:62`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-02: 10Y G-sec yield rises to 7.69 % (from 7.46 in 2026-10). Mechanism: M-BOND-01. Could be interrupted by: Issuance cuts; RBI OMO purchases.
+  - id `2313560ef632:p666:t04:state:g10:63`; parents 1; support: Low-Medium (judgmental)
+
+## 2027-03
+
+- **[publication]** 2027-03: CPI for 2027-02 published: headline 5.96%, food 8.30%, core 4.94%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t05:pub:cpi:64`; parents 1; support: High (calendar)
+- **[state_change]** 2027-03: Crude import bill rises to 21.83 USD bn/month (from 20.52 in 2027-02). Main drivers: price (Brent+freight) +1.35, volume -0.04 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t05:state:crude_bill:65`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-03: Net oil balance falls to -18.24 USD bn/month (from -17.17 in 2027-02). Main drivers: crude_bill -1.31, prod_exp +0.37, other_energy -0.13 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t05:state:oil_net:66`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-03: Remittances (net secondary income) rises to 13.63 USD bn/month (from 13.28 in 2026-12). Mechanism: M-EXT-07. Could be interrupted by: Gulf activity disruption, expat departures.
+  - id `2313560ef632:p666:t05:state:remit:67`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-03: FX pressure (excess USD demand) rises to 6.83 USD bn/month (from 4.79 in 2027-01). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t05:state:pressure:68`; parents 2; support: High (arithmetic)
+- **[decision]** 2027-03: RBI sells USD 5.1bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(6.83), 'Reserves prior (USD bn)': np.float64(724.0)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.50 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t05:decision:fx:69`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-03: INR per USD rises to 98.58 INR/USD (from 97.74 in 2027-01). Main drivers: unabsorbed pressure +1.07, dollar index -0.42, noise +0.21 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t05:state:inr:70`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2027-03: Fuel import-parity cost rises to 103.6 Rs/litre (from 97.7 in 2027-02). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t05:state:parity:71`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-03: OMC marketing margin falls to -25.5 Rs/litre (from -19.6 in 2027-02). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t05:state:omc_margin:72`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-03: Core inflation rises to 5.15 % y/y (from 4.74 in 2027-01). Mechanism: M-PRC-03. Could be interrupted by: Weak demand; margin compression.
+  - id `2313560ef632:p666:t05:state:core_yoy:73`; parents 3; support: Medium (benchmarked to published estimates)
+- **[state_change]** 2027-03: Inflation expectations rises to 5.16 % (1y) (from 5.00 in 2026-10). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - id `2313560ef632:p666:t05:state:exp_infl:74`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-03: Output gap rises to -1.17 % of potential (from -1.38 in 2027-01). Main drivers: phys +0.29, food -0.08, noise +0.06 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t05:state:gap:75`; parents 5; support: Low-Medium (judgmental)
+- **[state_change]** 2027-03: Bank credit growth falls to 10.48 % y/y (from 11.00 in 2026-10). Mechanism: M-CRD-01.
+  - id `2313560ef632:p666:t05:state:credit_yoy:76`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2027-03: Credit stress index rises to 0.33 index (from 0.18 in 2027-01). Mechanism: M-CRD-02.
+  - id `2313560ef632:p666:t05:state:stress:77`; parents 3; support: Low-Medium (judgmental)
+
+## 2027-04
+
+- **[publication]** 2027-04: CPI for 2027-03 published: headline 6.18%, food 8.63%, core 5.15%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t06:pub:cpi:78`; parents 1; support: High (calendar)
+- **[decision]** 2027-04: MPC hikes repo 25bp to 6.50% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(5.96), 'Core CPI (latest published)': np.float64(4.94), 'Expectations (%)': np.float64(5.16), 'GDP (latest published, % y/y)': np.float64(6.57), '3m INR depreciation (%)': np.float64(1.9)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +25bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t06:decision:mpc:79`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-04: Brent crude rises to 143.1 USD/bbl (from 136.0 in 2027-01). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - id `2313560ef632:p666:t06:state:brent:80`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-04: Crude import bill rises to 22.48 USD bn/month (from 21.83 in 2027-03). Main drivers: price (Brent+freight) +0.68, volume -0.03 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t06:state:crude_bill:81`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-04: Petroleum product exports rises to 7.00 USD bn/month (from 6.44 in 2027-02). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t06:state:prod_exp:82`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-04: Non-oil goods balance falls to -13.65 USD bn/month (from -12.81 in 2027-01). Mechanism: M-EXT-05. Could be interrupted by: Gold imports surge in uncertainty (not modelled).
+  - id `2313560ef632:p666:t06:state:nonoil_bal:83`; parents 2; support: Low-Medium (judgmental)
+- **[state_change]** 2027-04: Current account balance falls to -4.94 USD bn/month (from -3.59 in 2027-01). Main drivers: oil_net -0.91, nonoil_bal -0.84, remit +0.56 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t06:state:ca:84`; parents 3; support: High (arithmetic)
+- **[decision]** 2027-04: RBI sells USD 5.8bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(7.73), 'Reserves prior (USD bn)': np.float64(722.2)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.58 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t06:decision:fx:85`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-04: INR per USD rises to 99.86 INR/USD (from 98.58 in 2027-03). Main drivers: unabsorbed pressure +0.68, noise +0.49, dollar index +0.13 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t06:state:inr:86`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2027-04: FX reserves falls to 715.66 USD bn (from 724.02 in 2027-02). Main drivers: intervention (BoP) -10.91, valuation +2.56 [exact (stock-flow identity)]. Mechanism: M-FX-04.
+  - id `2313560ef632:p666:t06:state:reserves:87`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-04: Banking liquidity falls to -0.41 Rs lakh crore (from 0.13 in 2027-02). Mechanism: M-LIQ-01.
+  - id `2313560ef632:p666:t06:state:liq:88`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-04: Overnight rate (WACR) rises to 6.55 % (from 6.23 in 2027-02). Mechanism: M-LIQ-02.
+  - id `2313560ef632:p666:t06:state:wacr:89`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-04: Fuel import-parity cost rises to 107.7 Rs/litre (from 103.6 in 2027-03). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t06:state:parity:90`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-04: OMC marketing margin falls to -29.6 Rs/litre (from -25.5 in 2027-03). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t06:state:omc_margin:91`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-04: Headline CPI inflation rises to 6.33 % y/y (from 5.96 in 2027-02). Main drivers: food +3.21, core +2.95, energy +0.17 [exact (base-weighted component contributions to the LEVEL of headline y/y)]. Mechanism: M-PRC-04.
+  - id `2313560ef632:p666:t06:state:cpi_yoy:92`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-04: Projected fiscal deficit (current FY) rises to 4.39 % GDP (from 4.30 in 2026-10). Mechanism: M-FIS-01.
+  - id `2313560ef632:p666:t06:state:fd_proj:93`; parents 3; support: High (arithmetic)
+
+## 2027-05
+
+- **[publication]** 2027-05: CPI for 2027-04 published: headline 6.33%, food 8.78%, core 5.33%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t07:pub:cpi:94`; parents 1; support: High (calendar)
+- **[publication]** 2027-05: GDP for quarter ending 2027-03 published: 5.42% y/y. Mechanism: M-REAL-11.
+  - id `2313560ef632:p666:t07:pub:gdp:95`; parents 1; support: Medium (monthly activity proxy aggregated)
+- **[state_change]** 2027-05: Brent crude rises to 154.1 USD/bbl (from 143.1 in 2027-04). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - id `2313560ef632:p666:t07:state:brent:96`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-05: Crude import bill rises to 24.06 USD bn/month (from 22.48 in 2027-04). Main drivers: price (Brent+freight) +1.69, volume -0.10 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t07:state:crude_bill:97`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-05: Petroleum product exports rises to 7.46 USD bn/month (from 7.00 in 2027-04). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t07:state:prod_exp:98`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-05: Net oil balance falls to -20.06 USD bn/month (from -18.24 in 2027-03). Main drivers: crude_bill -2.23, prod_exp +0.65, other_energy -0.23 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t07:state:oil_net:99`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-05: Remittances (net secondary income) rises to 14.06 USD bn/month (from 13.63 in 2027-03). Mechanism: M-EXT-07. Could be interrupted by: Gulf activity disruption, expat departures.
+  - id `2313560ef632:p666:t07:state:remit:100`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-05: Current account balance falls to -6.26 USD bn/month (from -4.94 in 2027-04). Main drivers: oil_net -1.29, remit +0.32, nonoil_bal -0.27 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t07:state:ca:101`; parents 3; support: High (arithmetic)
+- **[state_change]** 2027-05: Portfolio flows (FPI) falls to -6.06 USD bn/month (from -4.28 in 2027-02). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t07:state:fpi:102`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2027-05: Capital account falls to -4.12 USD bn/month (from -2.38 in 2027-02). Main drivers: fpi -1.78, ecb_other +0.04, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t07:state:ka:103`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-05: FX pressure (excess USD demand) rises to 10.39 USD bn/month (from 6.83 in 2027-03). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t07:state:pressure:104`; parents 2; support: High (arithmetic)
+- **[decision]** 2027-05: RBI sells USD 7.8bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(10.39), 'Reserves prior (USD bn)': np.float64(715.7)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.80 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t07:decision:fx:105`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-05: INR per USD rises to 103.27 INR/USD (from 99.86 in 2027-04). Main drivers: noise +1.56, unabsorbed pressure +0.91, dollar index +0.88 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t07:state:inr:106`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2027-05: FX reserves falls to 702.60 USD bn (from 715.66 in 2027-04). Main drivers: intervention (BoP) -7.79, valuation -5.27 [exact (stock-flow identity)]. Mechanism: M-FX-04.
+  - id `2313560ef632:p666:t07:state:reserves:107`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-05: Banking liquidity falls to -0.81 Rs lakh crore (from -0.41 in 2027-04). Mechanism: M-LIQ-01.
+  - id `2313560ef632:p666:t07:state:liq:108`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-05: Fuel import-parity cost rises to 118.6 Rs/litre (from 107.7 in 2027-04). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t07:state:parity:109`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-05: OMC marketing margin falls to -40.5 Rs/litre (from -29.6 in 2027-04). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t07:state:omc_margin:110`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-05: Food inflation rises to 8.87 % y/y (from 8.30 in 2027-02). Mechanism: M-PRC-02. Could be interrupted by: Imports, stock releases.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t07:state:food_yoy:111`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2027-05: Energy inflation falls to 1.95 % y/y (from 3.00 in 2026-10). Mechanism: M-PRC-01.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t07:state:energy_yoy:112`; parents 0; support: High (arithmetic)
+- **[state_change]** 2027-05: Core inflation rises to 5.52 % y/y (from 5.15 in 2027-03). Mechanism: M-PRC-03. Could be interrupted by: Weak demand; margin compression.
+  - id `2313560ef632:p666:t07:state:core_yoy:113`; parents 4; support: Medium (benchmarked to published estimates)
+- **[state_change]** 2027-05: 10Y G-sec yield rises to 7.96 % (from 7.69 in 2027-02). Mechanism: M-BOND-01. Could be interrupted by: Issuance cuts; RBI OMO purchases.
+  - id `2313560ef632:p666:t07:state:g10:114`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2027-05: Credit stress index rises to 0.46 index (from 0.33 in 2027-03). Mechanism: M-CRD-02.
+  - id `2313560ef632:p666:t07:state:stress:115`; parents 3; support: Low-Medium (judgmental)
+
+## 2027-06
+
+- **[regime]** 2027-06: Inflation-expectations de-anchoring regime starts. Mechanism: M-PRC-05.
+  - id `2313560ef632:p666:t08:regime:deanchor:116`; parents 1; support: Low-Medium (judgmental hazard)
+- **[publication]** 2027-06: CPI for 2027-05 published: headline 6.46%, food 8.87%, core 5.52%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t08:pub:cpi:117`; parents 1; support: High (calendar)
+- **[decision]** 2027-06: MPC holds repo 0bp to 6.50% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(6.33), 'Core CPI (latest published)': np.float64(5.33), 'Expectations (%)': np.float64(5.26), 'GDP (latest published, % y/y)': np.float64(5.42), '3m INR depreciation (%)': np.float64(5.07)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +0bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t08:decision:mpc:118`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-06: Brent crude rises to 175.8 USD/bbl (from 154.1 in 2027-05). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t08:state:brent:119`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2027-06: Crude import bill rises to 27.14 USD bn/month (from 24.06 in 2027-05). Main drivers: price (Brent+freight) +3.28, volume -0.21 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t08:state:crude_bill:120`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-06: Petroleum product exports rises to 8.37 USD bn/month (from 7.46 in 2027-05). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t08:state:prod_exp:121`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-06: Net oil balance falls to -22.55 USD bn/month (from -20.06 in 2027-05). Main drivers: crude_bill -3.07, prod_exp +0.91, other_energy -0.32 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t08:state:oil_net:122`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-06: Current account balance falls to -8.53 USD bn/month (from -6.26 in 2027-05). Main drivers: oil_net -2.49, remit +0.15, nonoil_bal +0.09 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t08:state:ca:123`; parents 3; support: High (arithmetic)
+- **[state_change]** 2027-06: Portfolio flows (FPI) falls to -8.22 USD bn/month (from -6.06 in 2027-05). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t08:state:fpi:124`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2027-06: Capital account falls to -6.34 USD bn/month (from -4.12 in 2027-05). Main drivers: fpi -2.16, ecb_other -0.06, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t08:state:ka:125`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-06: FX pressure (excess USD demand) rises to 14.87 USD bn/month (from 10.39 in 2027-05). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t08:state:pressure:126`; parents 2; support: High (arithmetic)
+- **[decision]** 2027-06: RBI sells USD 11.2bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(14.87), 'Reserves prior (USD bn)': np.float64(702.6)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs1.17 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t08:decision:fx:127`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-06: INR per USD rises to 105.19 INR/USD (from 103.27 in 2027-05). Main drivers: unabsorbed pressure +1.31, dollar index +0.43, noise +0.10 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t08:state:inr:128`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2027-06: FX reserves falls to 688.92 USD bn (from 702.60 in 2027-05). Main drivers: intervention (BoP) -11.15, valuation -2.53 [exact (stock-flow identity)]. Mechanism: M-FX-04.
+  - id `2313560ef632:p666:t08:state:reserves:129`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-06: Banking liquidity falls to -1.40 Rs lakh crore (from -0.81 in 2027-05). Mechanism: M-LIQ-01.
+  - id `2313560ef632:p666:t08:state:liq:130`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-06: Fuel import-parity cost rises to 135.1 Rs/litre (from 118.6 in 2027-05). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t08:state:parity:131`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-06: OMC marketing margin falls to -57.0 Rs/litre (from -40.5 in 2027-05). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t08:state:omc_margin:132`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-06: Headline CPI inflation rises to 6.65 % y/y (from 6.33 in 2027-04). Main drivers: food +3.35, core +3.15, energy +0.14 [exact (base-weighted component contributions to the LEVEL of headline y/y)]. Mechanism: M-PRC-04.
+  - id `2313560ef632:p666:t08:state:cpi_yoy:133`; parents 3; support: High (arithmetic)
+- **[state_change]** 2027-06: Inflation expectations rises to 5.44 % (1y) (from 5.16 in 2027-03). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - id `2313560ef632:p666:t08:state:exp_infl:134`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-06: Output gap falls to -1.70 % of potential (from -1.17 in 2027-03). Main drivers: phys +0.31, input -0.23, omc -0.15 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t08:state:gap:135`; parents 5; support: Low-Medium (judgmental)
+- **[state_change]** 2027-06: Projected fiscal deficit (current FY) rises to 4.48 % GDP (from 4.39 in 2027-04). Mechanism: M-FIS-01.
+  - id `2313560ef632:p666:t08:state:fd_proj:136`; parents 3; support: High (arithmetic)
+- **[state_change]** 2027-06: 10Y G-sec yield rises to 8.21 % (from 7.96 in 2027-05). Mechanism: M-BOND-01. Could be interrupted by: Issuance cuts; RBI OMO purchases.
+  - id `2313560ef632:p666:t08:state:g10:137`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2027-06: Bank credit growth falls to 9.83 % y/y (from 10.48 in 2027-03). Mechanism: M-CRD-01.
+  - id `2313560ef632:p666:t08:state:credit_yoy:138`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2027-06: Credit stress index rises to 0.55 index (from 0.46 in 2027-05). Mechanism: M-CRD-02.
+  - id `2313560ef632:p666:t08:state:stress:139`; parents 3; support: Low-Medium (judgmental)
+
+## 2027-07
+
+- **[regime]** 2027-07: Gulf supply-disruption regime ends. Mechanism: M-OIL-01.
+  - id `2313560ef632:p666:t09:regime:disrupt:140`; parents 1; support: Low-Medium (judgmental hazard)
+- **[publication]** 2027-07: CPI for 2027-06 published: headline 6.65%, food 9.13%, core 5.71%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t09:pub:cpi:141`; parents 1; support: High (calendar)
+- **[state_change]** 2027-07: Brent crude falls to 100.0 USD/bbl (from 175.8 in 2027-06). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - id `2313560ef632:p666:t09:state:brent:142`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-07: Crude import bill falls to 15.75 USD bn/month (from 27.14 in 2027-06). Main drivers: price (Brent+freight) -11.99, volume +0.60 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t09:state:crude_bill:143`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-07: Petroleum product exports falls to 4.93 USD bn/month (from 8.37 in 2027-06). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t09:state:prod_exp:144`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-07: Net oil balance rises to -13.46 USD bn/month (from -22.55 in 2027-06). Main drivers: crude_bill +11.39, prod_exp -3.43, other_energy +1.13 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t09:state:oil_net:145`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-07: Current account balance rises to 0.90 USD bn/month (from -8.53 in 2027-06). Main drivers: oil_net +9.09, nonoil_bal +0.50, remit -0.16 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t09:state:ca:146`; parents 3; support: High (arithmetic)
+- **[state_change]** 2027-07: Portfolio flows (FPI) rises to -6.41 USD bn/month (from -8.22 in 2027-06). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t09:state:fpi:147`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2027-07: Capital account rises to -4.65 USD bn/month (from -6.34 in 2027-06). Main drivers: fpi +1.81, ecb_other -0.12, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t09:state:ka:148`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-07: FX pressure (excess USD demand) falls to 3.74 USD bn/month (from 14.87 in 2027-06). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t09:state:pressure:149`; parents 2; support: High (arithmetic)
+- **[decision]** 2027-07: RBI sells USD 2.8bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(3.74), 'Reserves prior (USD bn)': np.float64(688.9)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.30 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t09:decision:fx:150`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-07: Fuel import-parity cost falls to 79.7 Rs/litre (from 135.1 in 2027-06). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t09:state:parity:151`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-07: OMC marketing margin rises to -1.6 Rs/litre (from -57.0 in 2027-06). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t09:state:omc_margin:152`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-07: Food inflation rises to 9.43 % y/y (from 8.87 in 2027-05). Mechanism: M-PRC-02. Could be interrupted by: Imports, stock releases.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t09:state:food_yoy:153`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2027-07: Core inflation rises to 5.93 % y/y (from 5.52 in 2027-05). Mechanism: M-PRC-03. Could be interrupted by: Weak demand; margin compression.
+  - id `2313560ef632:p666:t09:state:core_yoy:154`; parents 4; support: Medium (benchmarked to published estimates)
+- **[state_change]** 2027-07: Inflation expectations rises to 5.62 % (1y) (from 5.44 in 2027-06). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - id `2313560ef632:p666:t09:state:exp_infl:155`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-07: Output gap rises to -1.17 % of potential (from -1.70 in 2027-06). Main drivers: input +0.58, noise -0.10, phys +0.08 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t09:state:gap:156`; parents 5; support: Low-Medium (judgmental)
+- **[state_change]** 2027-07: Projected fiscal deficit (current FY) falls to 4.32 % GDP (from 4.48 in 2027-06). Mechanism: M-FIS-01.
+  - id `2313560ef632:p666:t09:state:fd_proj:157`; parents 3; support: High (arithmetic)
+
+## 2027-08
+
+- **[publication]** 2027-08: CPI for 2027-07 published: headline 6.88%, food 9.43%, core 5.93%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t10:pub:cpi:158`; parents 1; support: High (calendar)
+- **[publication]** 2027-08: GDP for quarter ending 2027-06 published: 4.98% y/y. Mechanism: M-REAL-11.
+  - id `2313560ef632:p666:t10:pub:gdp:159`; parents 1; support: Medium (monthly activity proxy aggregated)
+- **[decision]** 2027-08: MPC holds repo 0bp to 6.50% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(6.65), 'Core CPI (latest published)': np.float64(5.71), 'Expectations (%)': np.float64(5.62), 'GDP (latest published, % y/y)': np.float64(5.42), '3m INR depreciation (%)': np.float64(5.94)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +0bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t10:decision:mpc:160`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-08: Capital account rises to -3.82 USD bn/month (from -4.65 in 2027-07). Main drivers: fpi +0.72, ecb_other +0.10, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t10:state:ka:161`; parents 1; support: High (arithmetic)
+- **[decision]** 2027-08: RBI sells USD 2.1bn (75% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(2.75), 'Reserves prior (USD bn)': np.float64(685.5)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 75% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.22 lakh crore of liquidity; sterilised share 50%.
+  - id `2313560ef632:p666:t10:decision:fx:162`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-08: Fuel import-parity cost falls to 75.8 Rs/litre (from 79.7 in 2027-07). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t10:state:parity:163`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-08: OMC marketing margin rises to 2.3 Rs/litre (from -1.6 in 2027-07). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t10:state:omc_margin:164`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-08: Headline CPI inflation rises to 7.05 % y/y (from 6.65 in 2027-06). Main drivers: food +3.57, core +3.36, energy +0.12 [exact (base-weighted component contributions to the LEVEL of headline y/y)]. Mechanism: M-PRC-04.
+  - id `2313560ef632:p666:t10:state:cpi_yoy:165`; parents 3; support: High (arithmetic)
+- **[state_change]** 2027-08: Inflation expectations rises to 5.81 % (1y) (from 5.62 in 2027-07). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - id `2313560ef632:p666:t10:state:exp_infl:166`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-08: 10Y G-sec yield rises to 8.36 % (from 8.21 in 2027-06). Mechanism: M-BOND-01. Could be interrupted by: Issuance cuts; RBI OMO purchases.
+  - id `2313560ef632:p666:t10:state:g10:167`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2027-08: Bank credit growth falls to 9.38 % y/y (from 9.83 in 2027-06). Mechanism: M-CRD-01.
+  - id `2313560ef632:p666:t10:state:credit_yoy:168`; parents 2; support: Low-Medium (judgmental)
+
+## 2027-09
+
+- **[publication]** 2027-09: CPI for 2027-08 published: headline 7.05%, food 9.68%, core 6.10%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t11:pub:cpi:169`; parents 1; support: High (calendar)
+- **[state_change]** 2027-09: Brent crude falls to 87.9 USD/bbl (from 100.0 in 2027-07). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - id `2313560ef632:p666:t11:state:brent:170`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-09: Crude import bill falls to 14.06 USD bn/month (from 15.75 in 2027-07). Main drivers: price (Brent+freight) -1.90, volume +0.21 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t11:state:crude_bill:171`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-09: Petroleum product exports falls to 4.43 USD bn/month (from 4.93 in 2027-07). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t11:state:prod_exp:172`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-09: Net oil balance rises to -12.11 USD bn/month (from -13.46 in 2027-07). Main drivers: crude_bill +1.68, prod_exp -0.51, other_energy +0.18 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t11:state:oil_net:173`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-09: Current account balance rises to 2.44 USD bn/month (from 0.90 in 2027-07). Main drivers: oil_net +1.36, services +0.08, nonoil_bal +0.07 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t11:state:ca:174`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-09: Portfolio flows (FPI) rises to -2.58 USD bn/month (from -6.41 in 2027-07). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t11:state:fpi:175`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2027-09: Capital account rises to -0.85 USD bn/month (from -3.82 in 2027-08). Main drivers: fpi +3.11, ecb_other -0.14, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t11:state:ka:176`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-09: FX pressure (excess USD demand) falls to -1.59 USD bn/month (from 3.74 in 2027-07). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t11:state:pressure:177`; parents 2; support: High (arithmetic)
+- **[decision]** 2027-09: RBI buys USD 1.1bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-1.59), 'Reserves prior (USD bn)': np.float64(687.8)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.12 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t11:decision:fx:178`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-09: Fuel import-parity cost falls to 70.7 Rs/litre (from 75.8 in 2027-08). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t11:state:parity:179`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-09: OMC marketing margin rises to 7.4 Rs/litre (from 2.3 in 2027-08). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t11:state:omc_margin:180`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-09: Core inflation rises to 6.23 % y/y (from 5.93 in 2027-07). Mechanism: M-PRC-03. Could be interrupted by: Weak demand; margin compression.
+  - id `2313560ef632:p666:t11:state:core_yoy:181`; parents 4; support: Medium (benchmarked to published estimates)
+- **[state_change]** 2027-09: Inflation expectations rises to 6.00 % (1y) (from 5.81 in 2027-08). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - id `2313560ef632:p666:t11:state:exp_infl:182`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-09: Output gap rises to -0.93 % of potential (from -1.17 in 2027-07). Main drivers: phys +0.12, omc +0.12, input +0.06 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t11:state:gap:183`; parents 5; support: Low-Medium (judgmental)
+- **[state_change]** 2027-09: 10Y G-sec yield rises to 8.49 % (from 8.36 in 2027-08). Mechanism: M-BOND-01. Could be interrupted by: Issuance cuts; RBI OMO purchases.
+  - id `2313560ef632:p666:t11:state:g10:184`; parents 3; support: Low-Medium (judgmental)
+
+## 2027-10
+
+- **[publication]** 2027-10: CPI for 2027-09 published: headline 7.14%, food 9.76%, core 6.23%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t12:pub:cpi:185`; parents 1; support: High (calendar)
+- **[decision]** 2027-10: MPC hikes repo 25bp to 6.75% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(7.05), 'Core CPI (latest published)': np.float64(6.1), 'Expectations (%)': np.float64(6.0), 'GDP (latest published, % y/y)': np.float64(4.98), '3m INR depreciation (%)': np.float64(-0.43)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +25bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t12:decision:mpc:186`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-10: Capital account rises to 0.05 USD bn/month (from -0.85 in 2027-09). Main drivers: fpi +0.80, ecb_other +0.10, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t12:state:ka:187`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-10: FX pressure (excess USD demand) falls to -3.09 USD bn/month (from -1.59 in 2027-09). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t12:state:pressure:188`; parents 2; support: High (arithmetic)
+- **[decision]** 2027-10: RBI buys USD 2.2bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-3.09), 'Reserves prior (USD bn)': np.float64(687.7)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.22 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t12:decision:fx:189`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-10: INR per USD falls to 104.02 INR/USD (from 105.19 in 2027-06). Main drivers: noise -0.78, dollar index -0.42, unabsorbed pressure +0.08 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t12:state:inr:190`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2027-10: Overnight rate (WACR) rises to 6.93 % (from 6.55 in 2027-04). Mechanism: M-LIQ-02.
+  - id `2313560ef632:p666:t12:state:wacr:191`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-10: Fuel import-parity cost falls to 67.7 Rs/litre (from 70.7 in 2027-09). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t12:state:parity:192`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-10: OMC marketing margin rises to 10.3 Rs/litre (from 7.4 in 2027-09). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t12:state:omc_margin:193`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-10: Inflation expectations rises to 6.17 % (1y) (from 6.00 in 2027-09). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - id `2313560ef632:p666:t12:state:exp_infl:194`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-10: Bank credit growth falls to 8.92 % y/y (from 9.38 in 2027-08). Mechanism: M-CRD-01.
+  - id `2313560ef632:p666:t12:state:credit_yoy:195`; parents 2; support: Low-Medium (judgmental)
+- **[state_change]** 2027-10: Credit stress index rises to 0.63 index (from 0.55 in 2027-06). Mechanism: M-CRD-02.
+  - id `2313560ef632:p666:t12:state:stress:196`; parents 3; support: Low-Medium (judgmental)
+
+## 2027-11
+
+- **[publication]** 2027-11: CPI for 2027-10 published: headline 7.15%, food 9.67%, core 6.32%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t13:pub:cpi:197`; parents 1; support: High (calendar)
+- **[publication]** 2027-11: GDP for quarter ending 2027-09 published: 5.01% y/y. Mechanism: M-REAL-11.
+  - id `2313560ef632:p666:t13:pub:gdp:198`; parents 1; support: Medium (monthly activity proxy aggregated)
+- **[state_change]** 2027-11: Brent crude falls to 80.8 USD/bbl (from 87.9 in 2027-09). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t13:state:brent:199`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2027-11: Crude import bill falls to 13.03 USD bn/month (from 14.06 in 2027-09). Main drivers: price (Brent+freight) -1.12, volume +0.09 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t13:state:crude_bill:200`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-11: Net oil balance rises to -11.26 USD bn/month (from -12.11 in 2027-09). Main drivers: crude_bill +1.03, prod_exp -0.30, other_energy +0.11 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t13:state:oil_net:201`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-11: Remittances (net secondary income) rises to 14.34 USD bn/month (from 14.06 in 2027-05). Mechanism: M-EXT-07. Could be interrupted by: Gulf activity disruption, expat departures.
+  - id `2313560ef632:p666:t13:state:remit:202`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-11: Portfolio flows (FPI) rises to -0.93 USD bn/month (from -2.58 in 2027-09). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t13:state:fpi:203`; parents 3; support: Low-Medium (judgmental)
+- **[decision]** 2027-11: RBI buys USD 2.7bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-3.81), 'Reserves prior (USD bn)': np.float64(689.7)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.28 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t13:decision:fx:204`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-11: Fuel import-parity cost falls to 65.4 Rs/litre (from 67.7 in 2027-10). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t13:state:parity:205`; parents 2; support: High (arithmetic)
+- **[state_change]** 2027-11: Inflation expectations rises to 6.32 % (1y) (from 6.17 in 2027-10). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - id `2313560ef632:p666:t13:state:exp_infl:206`; parents 1; support: Low-Medium (judgmental)
+
+## 2027-12
+
+- **[publication]** 2027-12: CPI for 2027-11 published: headline 7.18%, food 9.74%, core 6.31%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t14:pub:cpi:207`; parents 1; support: High (calendar)
+- **[decision]** 2027-12: MPC holds repo 0bp to 6.75% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(7.15), 'Core CPI (latest published)': np.float64(6.32), 'Expectations (%)': np.float64(6.32), 'GDP (latest published, % y/y)': np.float64(5.01), '3m INR depreciation (%)': np.float64(-1.15)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +0bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t14:decision:mpc:208`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-12: Remittances (net secondary income) rises to 14.69 USD bn/month (from 14.34 in 2027-11). Mechanism: M-EXT-07. Could be interrupted by: Gulf activity disruption, expat departures.
+  - id `2313560ef632:p666:t14:state:remit:209`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-12: Portfolio flows (FPI) falls to -1.80 USD bn/month (from -0.93 in 2027-11). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t14:state:fpi:210`; parents 3; support: Low-Medium (judgmental)
+- **[decision]** 2027-12: RBI buys USD 2.0bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-2.84), 'Reserves prior (USD bn)': np.float64(693.9)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.21 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t14:decision:fx:211`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2027-12: OMC marketing margin rises to 12.9 Rs/litre (from 10.3 in 2027-10). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t14:state:omc_margin:212`; parents 1; support: High (arithmetic)
+- **[state_change]** 2027-12: Inflation expectations rises to 6.45 % (1y) (from 6.32 in 2027-11). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - id `2313560ef632:p666:t14:state:exp_infl:213`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2027-12: Output gap rises to -0.59 % of potential (from -0.93 in 2027-09). Main drivers: omc +0.17, phys +0.13, noise +0.06 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t14:state:gap:214`; parents 5; support: Low-Medium (judgmental)
+- **[state_change]** 2027-12: 10Y G-sec yield rises to 8.86 % (from 8.49 in 2027-09). Mechanism: M-BOND-01. Could be interrupted by: Issuance cuts; RBI OMO purchases.
+  - id `2313560ef632:p666:t14:state:g10:215`; parents 2; support: Low-Medium (judgmental)
+
+## 2028-01
+
+- **[publication]** 2028-01: CPI for 2027-12 published: headline 7.11%, food 9.78%, core 6.16%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t15:pub:cpi:216`; parents 1; support: High (calendar)
+- **[state_change]** 2028-01: Brent crude falls to 76.2 USD/bbl (from 80.8 in 2027-11). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t15:state:brent:217`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2028-01: Crude import bill falls to 12.39 USD bn/month (from 13.03 in 2027-11). Main drivers: price (Brent+freight) -0.72, volume +0.08 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t15:state:crude_bill:218`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-01: Petroleum product exports falls to 3.94 USD bn/month (from 4.43 in 2027-09). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t15:state:prod_exp:219`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-01: Remittances (net secondary income) falls to 13.47 USD bn/month (from 14.69 in 2027-12). Mechanism: M-EXT-07. Could be interrupted by: Gulf activity disruption, expat departures.
+  - id `2313560ef632:p666:t15:state:remit:220`; parents 1; support: Low-Medium (judgmental)
+- **[decision]** 2028-01: RBI buys USD 1.7bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-2.4), 'Reserves prior (USD bn)': np.float64(693.2)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.18 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t15:decision:fx:221`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-01: INR per USD rises to 105.14 INR/USD (from 104.02 in 2027-10). Main drivers: noise +1.51, unabsorbed pressure -0.96, dollar index +0.52 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t15:state:inr:222`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2028-01: Fuel import-parity cost falls to 63.3 Rs/litre (from 65.4 in 2027-11). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t15:state:parity:223`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-01: Core inflation falls to 5.87 % y/y (from 6.23 in 2027-09). Mechanism: M-PRC-03. Could be interrupted by: Weak demand; margin compression.
+  - id `2313560ef632:p666:t15:state:core_yoy:224`; parents 4; support: Medium (benchmarked to published estimates)
+- **[state_change]** 2028-01: Bank credit growth falls to 8.47 % y/y (from 8.92 in 2027-10). Mechanism: M-CRD-01.
+  - id `2313560ef632:p666:t15:state:credit_yoy:225`; parents 3; support: Low-Medium (judgmental)
+
+## 2028-02
+
+- **[publication]** 2028-02: CPI for 2028-01 published: headline 6.96%, food 9.80%, core 5.87%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t16:pub:cpi:226`; parents 1; support: High (calendar)
+- **[publication]** 2028-02: GDP for quarter ending 2027-12 published: 5.93% y/y. Mechanism: M-REAL-11.
+  - id `2313560ef632:p666:t16:pub:gdp:227`; parents 1; support: Medium (monthly activity proxy aggregated)
+- **[decision]** 2028-02: MPC hikes repo 25bp to 7.00% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(7.11), 'Core CPI (latest published)': np.float64(6.16), 'Expectations (%)': np.float64(6.55), 'GDP (latest published, % y/y)': np.float64(5.01), '3m INR depreciation (%)': np.float64(1.08)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +25bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t16:decision:mpc:228`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-02: Brent crude falls to 71.6 USD/bbl (from 76.2 in 2028-01). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t16:state:brent:229`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2028-02: Crude import bill falls to 11.70 USD bn/month (from 12.39 in 2028-01). Main drivers: price (Brent+freight) -0.73, volume +0.05 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t16:state:crude_bill:230`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-02: Net oil balance rises to -10.18 USD bn/month (from -11.26 in 2027-11). Main drivers: crude_bill +1.33, prod_exp -0.38, other_energy +0.14 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t16:state:oil_net:231`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-02: Non-oil goods balance falls to -14.51 USD bn/month (from -13.65 in 2027-04). Mechanism: M-EXT-05. Could be interrupted by: Gold imports surge in uncertainty (not modelled).
+  - id `2313560ef632:p666:t16:state:nonoil_bal:232`; parents 2; support: Low-Medium (judgmental)
+- **[state_change]** 2028-02: FX pressure (excess USD demand) rises to -1.58 USD bn/month (from -3.09 in 2027-10). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t16:state:pressure:233`; parents 0; support: High (arithmetic)
+- **[decision]** 2028-02: RBI buys USD 1.1bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-1.58), 'Reserves prior (USD bn)': np.float64(693.0)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.12 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t16:decision:fx:234`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-02: INR per USD falls to 104.25 INR/USD (from 105.14 in 2028-01). Main drivers: noise -1.26, dollar index +0.57, unabsorbed pressure -0.17 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t16:state:inr:235`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2028-02: Banking liquidity rises to -1.10 Rs lakh crore (from -1.40 in 2027-06). Mechanism: M-LIQ-01.
+  - id `2313560ef632:p666:t16:state:liq:236`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-02: Overnight rate (WACR) rises to 7.13 % (from 6.93 in 2027-10). Mechanism: M-LIQ-02.
+  - id `2313560ef632:p666:t16:state:wacr:237`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-02: Fuel import-parity cost falls to 59.7 Rs/litre (from 63.3 in 2028-01). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t16:state:parity:238`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-02: OMC marketing margin rises to 18.3 Rs/litre (from 12.9 in 2027-12). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t16:state:omc_margin:239`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-02: Core inflation falls to 5.60 % y/y (from 5.87 in 2028-01). Mechanism: M-PRC-03. Could be interrupted by: Weak demand; margin compression.
+  - id `2313560ef632:p666:t16:state:core_yoy:240`; parents 4; support: Medium (benchmarked to published estimates)
+- **[state_change]** 2028-02: Inflation expectations rises to 6.61 % (1y) (from 6.45 in 2027-12). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t16:state:exp_infl:241`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2028-02: 10Y G-sec yield rises to 9.02 % (from 8.86 in 2027-12). Mechanism: M-BOND-01. Could be interrupted by: Issuance cuts; RBI OMO purchases.
+  - id `2313560ef632:p666:t16:state:g10:242`; parents 2; support: Low-Medium (judgmental)
+
+## 2028-03
+
+- **[publication]** 2028-03: CPI for 2028-02 published: headline 6.81%, food 9.78%, core 5.60%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t17:pub:cpi:243`; parents 1; support: High (calendar)
+- **[state_change]** 2028-03: Current account balance falls to 1.55 USD bn/month (from 2.44 in 2027-09). Main drivers: oil_net +2.00, nonoil_bal -1.74, remit -0.81 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t17:state:ca:244`; parents 3; support: High (arithmetic)
+- **[state_change]** 2028-03: INR per USD rises to 106.18 INR/USD (from 104.25 in 2028-02). Main drivers: noise +2.08, dollar index -0.16, unabsorbed pressure -0.09 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t17:state:inr:245`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2028-03: Headline CPI inflation falls to 6.69 % y/y (from 7.05 in 2027-08). Main drivers: food +3.65, core +2.94, energy +0.09 [exact (base-weighted component contributions to the LEVEL of headline y/y)]. Mechanism: M-PRC-04.
+  - id `2313560ef632:p666:t17:state:cpi_yoy:246`; parents 1; support: High (arithmetic)
+
+## 2028-04
+
+- **[publication]** 2028-04: CPI for 2028-03 published: headline 6.69%, food 9.77%, core 5.36%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t18:pub:cpi:247`; parents 1; support: High (calendar)
+- **[decision]** 2028-04: MPC hikes repo 25bp to 7.25% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(6.81), 'Core CPI (latest published)': np.float64(5.6), 'Expectations (%)': np.float64(6.64), 'GDP (latest published, % y/y)': np.float64(5.93), '3m INR depreciation (%)': np.float64(1.71)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +25bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t18:decision:mpc:248`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-04: Remittances (net secondary income) falls to 13.22 USD bn/month (from 13.47 in 2028-01). Mechanism: M-EXT-07. Could be interrupted by: Gulf activity disruption, expat departures.
+  - id `2313560ef632:p666:t18:state:remit:249`; parents 1; support: Low-Medium (judgmental)
+- **[state_change]** 2028-04: Portfolio flows (FPI) falls to -2.80 USD bn/month (from -1.80 in 2027-12). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t18:state:fpi:250`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2028-04: Capital account falls to -0.97 USD bn/month (from 0.05 in 2027-10). Main drivers: fpi -1.02, ecb_other +0.00, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t18:state:ka:251`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-04: FX pressure (excess USD demand) rises to -0.54 USD bn/month (from -1.58 in 2028-02). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t18:state:pressure:252`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-04: INR per USD rises to 107.57 INR/USD (from 106.18 in 2028-03). Main drivers: noise +1.45, dollar index -0.09, unabsorbed pressure -0.06 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t18:state:inr:253`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2028-04: Overnight rate (WACR) rises to 7.38 % (from 7.13 in 2028-02). Mechanism: M-LIQ-02.
+  - id `2313560ef632:p666:t18:state:wacr:254`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-04: Fuel import-parity cost rises to 62.8 Rs/litre (from 59.7 in 2028-02). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t18:state:parity:255`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-04: OMC marketing margin falls to 15.3 Rs/litre (from 18.3 in 2028-02). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t18:state:omc_margin:256`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-04: Core inflation falls to 5.20 % y/y (from 5.60 in 2028-02). Mechanism: M-PRC-03. Could be interrupted by: Weak demand; margin compression.
+  - id `2313560ef632:p666:t18:state:core_yoy:257`; parents 4; support: Medium (benchmarked to published estimates)
+- **[state_change]** 2028-04: Output gap falls to -0.96 % of potential (from -0.59 in 2027-12). Main drivers: noise -0.39, omc +0.16, gdem -0.13 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t18:state:gap:258`; parents 4; support: Low-Medium (judgmental)
+- **[state_change]** 2028-04: 10Y G-sec yield rises to 9.26 % (from 9.02 in 2028-02). Mechanism: M-BOND-01. Could be interrupted by: Issuance cuts; RBI OMO purchases.
+  - id `2313560ef632:p666:t18:state:g10:259`; parents 2; support: Low-Medium (judgmental)
+
+## 2028-05
+
+- **[publication]** 2028-05: CPI for 2028-04 published: headline 6.64%, food 9.88%, core 5.20%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t19:pub:cpi:260`; parents 1; support: High (calendar)
+- **[publication]** 2028-05: GDP for quarter ending 2028-03 published: 6.93% y/y. Mechanism: M-REAL-11.
+  - id `2313560ef632:p666:t19:pub:gdp:261`; parents 1; support: Medium (monthly activity proxy aggregated)
+- **[state_change]** 2028-05: Brent crude falls to 65.7 USD/bbl (from 71.6 in 2028-02). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t19:state:brent:262`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2028-05: Crude import bill falls to 10.76 USD bn/month (from 11.70 in 2028-02). Main drivers: price (Brent+freight) -0.95, volume +0.01 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t19:state:crude_bill:263`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-05: Petroleum product exports falls to 3.50 USD bn/month (from 3.94 in 2028-01). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t19:state:prod_exp:264`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-05: Net oil balance rises to -9.40 USD bn/month (from -10.18 in 2028-02). Main drivers: crude_bill +0.94, prod_exp -0.25, other_energy +0.09 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t19:state:oil_net:265`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-05: Current account balance rises to 2.84 USD bn/month (from 1.55 in 2028-03). Main drivers: oil_net +0.71, nonoil_bal +0.64, remit -0.11 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t19:state:ca:266`; parents 3; support: High (arithmetic)
+- **[state_change]** 2028-05: Portfolio flows (FPI) rises to -1.77 USD bn/month (from -2.80 in 2028-04). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t19:state:fpi:267`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2028-05: Capital account rises to -0.14 USD bn/month (from -0.97 in 2028-04). Main drivers: fpi +1.03, ecb_other -0.20, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t19:state:ka:268`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-05: FX pressure (excess USD demand) falls to -2.71 USD bn/month (from -0.54 in 2028-04). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t19:state:pressure:269`; parents 2; support: High (arithmetic)
+- **[decision]** 2028-05: RBI buys USD 1.9bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-2.71), 'Reserves prior (USD bn)': np.float64(693.2)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.20 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t19:decision:fx:270`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-05: Fuel import-parity cost falls to 57.9 Rs/litre (from 62.8 in 2028-04). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t19:state:parity:271`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-05: OMC marketing margin rises to 20.2 Rs/litre (from 15.3 in 2028-04). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t19:state:omc_margin:272`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-05: Output gap rises to -0.61 % of potential (from -0.96 in 2028-04). Main drivers: noise +0.18, input +0.07, food +0.03 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t19:state:gap:273`; parents 4; support: Low-Medium (judgmental)
+
+## 2028-06
+
+- **[publication]** 2028-06: CPI for 2028-05 published: headline 6.54%, food 9.75%, core 5.09%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t20:pub:cpi:274`; parents 1; support: High (calendar)
+- **[decision]** 2028-06: MPC hikes repo 25bp to 7.50% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(6.64), 'Core CPI (latest published)': np.float64(5.2), 'Expectations (%)': np.float64(6.64), 'GDP (latest published, % y/y)': np.float64(6.93), '3m INR depreciation (%)': np.float64(3.55)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +25bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t20:decision:mpc:275`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-06: Current account balance falls to 1.90 USD bn/month (from 2.84 in 2028-05). Main drivers: nonoil_bal -0.49, oil_net -0.37, services -0.07 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t20:state:ca:276`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-06: Portfolio flows (FPI) falls to -2.73 USD bn/month (from -1.77 in 2028-05). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t20:state:fpi:277`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2028-06: Capital account falls to -1.07 USD bn/month (from -0.14 in 2028-05). Main drivers: fpi -0.96, ecb_other +0.03, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t20:state:ka:278`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-06: FX pressure (excess USD demand) rises to -0.83 USD bn/month (from -2.71 in 2028-05). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t20:state:pressure:279`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-06: Overnight rate (WACR) rises to 7.61 % (from 7.38 in 2028-04). Mechanism: M-LIQ-02.
+  - id `2313560ef632:p666:t20:state:wacr:280`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-06: Headline CPI inflation falls to 6.37 % y/y (from 6.69 in 2028-03). Main drivers: food +3.53, core +2.75, energy +0.09 [exact (base-weighted component contributions to the LEVEL of headline y/y)]. Mechanism: M-PRC-04.
+  - id `2313560ef632:p666:t20:state:cpi_yoy:281`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-06: 10Y G-sec yield rises to 9.53 % (from 9.26 in 2028-04). Mechanism: M-BOND-01. Could be interrupted by: Issuance cuts; RBI OMO purchases.
+  - id `2313560ef632:p666:t20:state:g10:282`; parents 1; support: Low-Medium (judgmental)
+
+## 2028-07
+
+- **[publication]** 2028-07: CPI for 2028-06 published: headline 6.37%, food 9.40%, core 5.03%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t21:pub:cpi:283`; parents 1; support: High (calendar)
+- **[state_change]** 2028-07: Brent crude rises to 69.6 USD/bbl (from 65.7 in 2028-05). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t21:state:brent:284`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2028-07: Crude import bill rises to 11.41 USD bn/month (from 10.76 in 2028-05). Main drivers: price (Brent+freight) +0.63, volume +0.02 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t21:state:crude_bill:285`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-07: Portfolio flows (FPI) rises to -1.37 USD bn/month (from -2.73 in 2028-06). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t21:state:fpi:286`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2028-07: Capital account rises to 0.29 USD bn/month (from -1.07 in 2028-06). Main drivers: fpi +1.36, ecb_other +0.00, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t21:state:ka:287`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-07: FX pressure (excess USD demand) falls to -2.04 USD bn/month (from -0.83 in 2028-06). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t21:state:pressure:288`; parents 2; support: High (arithmetic)
+- **[decision]** 2028-07: RBI buys USD 1.4bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-2.04), 'Reserves prior (USD bn)': np.float64(693.8)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.15 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t21:decision:fx:289`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-07: Fuel import-parity cost rises to 60.5 Rs/litre (from 57.9 in 2028-05). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t21:state:parity:290`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-07: OMC marketing margin falls to 17.6 Rs/litre (from 20.2 in 2028-05). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t21:state:omc_margin:291`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-07: Core inflation falls to 4.94 % y/y (from 5.20 in 2028-04). Mechanism: M-PRC-03. Could be interrupted by: Weak demand; margin compression.
+  - id `2313560ef632:p666:t21:state:core_yoy:292`; parents 3; support: Medium (benchmarked to published estimates)
+- **[state_change]** 2028-07: Output gap rises to -0.37 % of potential (from -0.61 in 2028-05). Main drivers: noise +0.26, input -0.11, gdem -0.06 [exact (linear channel system)]. Mechanism: M-REAL-01, M-REAL-02, M-REAL-03, M-REAL-04, M-REAL-05, M-REAL-06, M-REAL-07, M-REAL-08, M-REAL-09, M-REAL-10. Could be interrupted by: Budget compensation; Transfers.
+  - id `2313560ef632:p666:t21:state:gap:293`; parents 4; support: Low-Medium (judgmental)
+
+## 2028-08
+
+- **[publication]** 2028-08: CPI for 2028-07 published: headline 6.26%, food 9.18%, core 4.94%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t22:pub:cpi:294`; parents 1; support: High (calendar)
+- **[publication]** 2028-08: GDP for quarter ending 2028-06 published: 6.94% y/y. Mechanism: M-REAL-11.
+  - id `2313560ef632:p666:t22:pub:gdp:295`; parents 1; support: Medium (monthly activity proxy aggregated)
+- **[decision]** 2028-08: MPC holds repo 0bp to 7.50% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(6.37), 'Core CPI (latest published)': np.float64(5.03), 'Expectations (%)': np.float64(6.59), 'GDP (latest published, % y/y)': np.float64(6.93), '3m INR depreciation (%)': np.float64(0.25)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +0bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t22:decision:mpc:296`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-08: Brent crude rises to 74.7 USD/bbl (from 69.6 in 2028-07). Mechanism: M-OIL-01, M-OIL-02. Could be interrupted by: SPR releases, OPEC+ spare capacity, demand destruction; Supply cuts in response to weak demand.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t22:state:brent:297`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2028-08: Crude import bill rises to 12.19 USD bn/month (from 11.41 in 2028-07). Main drivers: price (Brent+freight) +0.82, volume -0.03 [exact (two-factor midpoint split)]. Mechanism: M-EXT-01. Could be interrupted by: Volume response; discounted Russian barrels (not modelled).
+  - id `2313560ef632:p666:t22:state:crude_bill:298`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-08: Net oil balance falls to -10.59 USD bn/month (from -9.40 in 2028-05). Main drivers: crude_bill -1.43, prod_exp +0.38, other_energy -0.14 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-04.
+  - id `2313560ef632:p666:t22:state:oil_net:299`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-08: Current account balance falls to 0.99 USD bn/month (from 1.90 in 2028-06). Main drivers: oil_net -0.82, remit -0.13, services +0.03 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-EXT-09.
+  - id `2313560ef632:p666:t22:state:ca:300`; parents 1; support: High (arithmetic)
+- **[decision]** 2028-08: RBI buys USD 1.1bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-1.58), 'Reserves prior (USD bn)': np.float64(692.8)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.12 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t22:decision:fx:301`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-08: Banking liquidity rises to -0.77 Rs lakh crore (from -1.10 in 2028-02). Mechanism: M-LIQ-01.
+  - id `2313560ef632:p666:t22:state:liq:302`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-08: Fuel import-parity cost rises to 64.1 Rs/litre (from 60.5 in 2028-07). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t22:state:parity:303`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-08: OMC marketing margin falls to 14.0 Rs/litre (from 17.6 in 2028-07). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t22:state:omc_margin:304`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-08: Bank credit growth falls to 8.06 % y/y (from 8.47 in 2028-01). Mechanism: M-CRD-01.
+  - id `2313560ef632:p666:t22:state:credit_yoy:305`; parents 2; support: Low-Medium (judgmental)
+
+## 2028-09
+
+- **[publication]** 2028-09: CPI for 2028-08 published: headline 6.17%, food 8.94%, core 4.94%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t23:pub:cpi:306`; parents 1; support: High (calendar)
+- **[state_change]** 2028-09: Petroleum product exports rises to 3.91 USD bn/month (from 3.50 in 2028-05). Mechanism: M-EXT-02. Could be interrupted by: Export curbs / windfall taxes.
+  - id `2313560ef632:p666:t23:state:prod_exp:307`; parents 1; support: High (arithmetic)
+- **[decision]** 2028-09: RBI buys USD 1.0bn (70% of pressure). Mechanism: M-FX-02, M-LIQ-01.
+  - Observed: {'FX pressure (USD bn)': np.float64(-1.44), 'Reserves prior (USD bn)': np.float64(693.5)} | Choices: ['heavy 75%', 'moderate 50%', 'light 25%'] | Chosen: 70% | Constraints: scaled down near floor (~USD551bn); cannot sell below 95% of floor
+  - Expected response: Drains Rs0.11 lakh crore of liquidity; sterilised share -50%.
+  - id `2313560ef632:p666:t23:decision:fx:308`; parents 1; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-09: INR per USD rises to 109.83 INR/USD (from 107.57 in 2028-04). Main drivers: noise +1.76, dollar index +1.23, unabsorbed pressure -0.91 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t23:state:inr:309`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2028-09: Food inflation falls to 8.84 % y/y (from 9.43 in 2027-07). Mechanism: M-PRC-02. Could be interrupted by: Imports, stock releases.
+  - No reportable parent event within the lag window: the move comes from this path's random innovations and/or persistence of earlier changes.
+  - id `2313560ef632:p666:t23:state:food_yoy:310`; parents 0; support: Low-Medium (judgmental)
+- **[state_change]** 2028-09: Inflation expectations falls to 6.48 % (1y) (from 6.61 in 2028-02). Mechanism: M-PRC-05. Could be interrupted by: Credible RBI action.
+  - id `2313560ef632:p666:t23:state:exp_infl:311`; parents 1; support: Low-Medium (judgmental)
+
+## 2028-10
+
+- **[publication]** 2028-10: CPI for 2028-09 published: headline 6.18%, food 8.84%, core 5.02%. Mechanism: M-PUB-01.
+  - id `2313560ef632:p666:t24:pub:cpi:312`; parents 1; support: High (calendar)
+- **[decision]** 2028-10: MPC holds repo 0bp to 7.50% (rule: inflation_targeting). Mechanism: M-MPC-01.
+  - Observed: {'CPI (latest published, % y/y)': np.float64(6.17), 'Core CPI (latest published)': np.float64(4.94), 'Expectations (%)': np.float64(6.48), 'GDP (latest published, % y/y)': np.float64(6.94), '3m INR depreciation (%)': np.float64(1.84)} | Choices: ['-50bp', '-25bp', 'hold', '+25bp', '+50bp'] | Chosen: +0bp | Constraints: repo bounded 3-9%; max 50bp per meeting; uses only published data
+  - Expected response: Higher real rates cool demand after ~3 months and widen the yield spread (supports FPI); costs: credit growth, stress.
+  - id `2313560ef632:p666:t24:decision:mpc:313`; parents 2; support: Medium (explicit rule; behaviour uncertain)
+- **[state_change]** 2028-10: Portfolio flows (FPI) falls to -3.11 USD bn/month (from -1.37 in 2028-07). Mechanism: M-CAP-01. Could be interrupted by: Index inclusion flows; valuation-driven buying.
+  - id `2313560ef632:p666:t24:state:fpi:314`; parents 3; support: Low-Medium (judgmental)
+- **[state_change]** 2028-10: Capital account falls to -1.43 USD bn/month (from 0.29 in 2028-07). Main drivers: fpi -1.73, ecb_other +0.01, fdi +0.00 [exact (accounting identity; signs as effect on balance)]. Mechanism: M-CAP-03.
+  - id `2313560ef632:p666:t24:state:ka:315`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-10: FX pressure (excess USD demand) rises to 0.12 USD bn/month (from -2.04 in 2028-07). Mechanism: M-FX-01. Could be interrupted by: Capital inflows.
+  - id `2313560ef632:p666:t24:state:pressure:316`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-10: INR per USD falls to 108.69 INR/USD (from 109.83 in 2028-09). Main drivers: dollar index -0.83, noise -0.22, unabsorbed pressure +0.01 [exact in log-% terms (sum of monthly depreciation drivers)]. Mechanism: M-FX-03. Could be interrupted by: Exporter conversion, forward-book use.
+  - id `2313560ef632:p666:t24:state:inr:317`; parents 2; support: Low (illustrative placeholder)
+- **[state_change]** 2028-10: FX reserves rises to 696.82 USD bn (from 688.92 in 2027-06). Main drivers: intervention (BoP) +12.71, valuation -4.81 [exact (stock-flow identity)]. Mechanism: M-FX-04.
+  - id `2313560ef632:p666:t24:state:reserves:318`; parents 1; support: High (arithmetic)
+- **[state_change]** 2028-10: Fuel import-parity cost rises to 66.6 Rs/litre (from 64.1 in 2028-08). Mechanism: M-FUEL-01.
+  - id `2313560ef632:p666:t24:state:parity:319`; parents 2; support: High (arithmetic)
+- **[state_change]** 2028-10: OMC marketing margin falls to 11.4 Rs/litre (from 14.0 in 2028-08). Mechanism: M-FUEL-03.
+  - id `2313560ef632:p666:t24:state:omc_margin:320`; parents 1; support: High (arithmetic)

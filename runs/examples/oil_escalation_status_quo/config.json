@@ -1,0 +1,82 @@
+{
+  "identity": {
+    "run_id": "2313560ef632",
+    "created_ist": "2026-10-25T13:40:20+05:30",
+    "versions": {
+      "engine": "0.3.0",
+      "params": "params-0.3.0",
+      "mechanisms": "mech-0.3.0",
+      "baseline": "IN-2026-10",
+      "params_hash": "8afe57371205",
+      "baseline_hash": "39b51f689e36"
+    },
+    "seed": 20261025,
+    "n_paths": 1000,
+    "param_mode": "sampled",
+    "shock_mode": "stochastic",
+    "scenario": "oil_escalation",
+    "policies": {
+      "gov_fuel": "freeze_omc_absorb",
+      "gov_fiscal": "accommodate",
+      "rbi_mpc": "inflation_targeting",
+      "rbi_fx": "heavy",
+      "rbi_steril": "half"
+    },
+    "structure": {
+      "expectations": "adaptive",
+      "fx_regime": "managed"
+    },
+    "overrides": {}
+  },
+  "spec": {
+    "scenario": {
+      "id": "oil_escalation",
+      "name": "Oil escalation - Strait of Hormuz disruption (supply shock)",
+      "version": 1,
+      "description": "Escalation on top of the current regime from Nov 2026: Hormuz transit disrupted. Oil anchor +USD40/bbl, freight +USD6, cracks +USD8, 3% physical crude shortfall for a forced 3 months, after which the escalation layer ends with 20%/month hazard. Risk-off +1.0 sd on onset. Shock type = SUPPLY disruption (not demand-led), so global demand does not rise with oil.\n",
+      "shocks": [
+        {
+          "type": "oil_escalation",
+          "start": 1,
+          "premium": 40.0,
+          "forced_months": 3,
+          "hazard_after": 0.2,
+          "shortfall_pct": 3.0,
+          "freight_extra": 6.0,
+          "crack_extra": 8.0,
+          "risk_impulse": 1.0
+        }
+      ],
+      "policies": {
+        "gov_fuel": "freeze_omc_absorb",
+        "gov_fiscal": "accommodate",
+        "rbi_mpc": "inflation_targeting",
+        "rbi_fx": "heavy",
+        "rbi_steril": "half"
+      },
+      "structure": {
+        "expectations": "adaptive",
+        "fx_regime": "managed"
+      }
+    },
+    "policies": {
+      "gov_fuel": "freeze_omc_absorb",
+      "gov_fiscal": "accommodate",
+      "rbi_mpc": "inflation_targeting",
+      "rbi_fx": "heavy",
+      "rbi_steril": "half"
+    },
+    "structure": {
+      "expectations": "adaptive",
+      "fx_regime": "managed"
+    },
+    "horizon": 24,
+    "n_paths": 1000,
+    "seed": 20261025,
+    "param_mode": "sampled",
+    "shock_mode": "stochastic",
+    "path_offset": 0,
+    "overrides": {},
+    "param_overrides": {}
+  }
+}

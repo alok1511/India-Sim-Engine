@@ -1,0 +1,10 @@
+id: food_stress
+name: Domestic food-supply stress (2027 monsoon failure)
+version: 1
+description: >
+  Food supply shock of +6pp (annualised food inflation) from Jul 2027 (month 9) for 5 months,
+  on top of the reference path. Tests expectations de-anchoring and the RBI look-through choice.
+shocks:
+  - {type: food_supply, start: 9, months: 5, magnitude: 6.0}
+policies: {gov_fuel: freeze_omc_absorb, gov_fiscal: accommodate, rbi_mpc: inflation_targeting, rbi_fx: heavy, rbi_steril: half}
+structure: {expectations: adaptive, fx_regime: managed}

@@ -1,0 +1,11 @@
+id: global_tightening
+name: Global demand weakness + US financial tightening
+version: 1
+description: >
+  From Nov 2026: US10Y +80bp, dollar +5%, risk-off +1.5 sd, world demand gap -1.5pp, each
+  persisting 9 months then decaying. Oil anchor falls with weaker demand through the
+  oil_gdem_beta channel (a demand-driven oil move, unlike the supply escalation).
+shocks:
+  - {type: global_tightening, start: 1, months: 9, us10y: 0.8, dxy_pct: 5.0, risk: 1.5, gdem: -1.5}
+policies: {gov_fuel: freeze_omc_absorb, gov_fiscal: accommodate, rbi_mpc: inflation_targeting, rbi_fx: heavy, rbi_steril: half}
+structure: {expectations: adaptive, fx_regime: managed}

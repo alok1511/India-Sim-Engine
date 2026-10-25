@@ -1,0 +1,20 @@
+{
+  "title": "Hormuz closure for 4 months with a weaker global economy",
+  "as_of": "2026-10-25",
+  "narrative": "Analyst brief: Houthi strikes widen to tanker traffic; Hormuz transits fall sharply from November. US data soften. Question: which risks for India cross critical thresholds, and does a 50% pump-price pass-through change the picture?",
+  "shocks": [
+    {"type": "oil_escalation", "start": 1, "premium": 50.0, "forced_months": 4, "hazard_after": 0.15, "shortfall_pct": 4.0,
+     "freight_extra": 8.0, "crack_extra": 10.0, "risk_impulse": 1.2},
+    {"type": "global_tightening", "start": 2, "months": 6, "us10y": 0.0, "dxy_pct": 2.0, "risk": 0.5, "gdem": -1.0}
+  ],
+  "policies": {"gov_fuel": "freeze_omc_absorb", "rbi_fx": "heavy"},
+  "compare_policies": {"50% pass-through": {"gov_fuel": "partial_50"}, "Budget compensation": {"gov_fuel": "freeze_budget_comp"}},
+  "thresholds": [
+    {"id": "T-INR105", "var": "inr", "op": ">", "level": 105, "kind": "any", "unit": "INR/USD", "label": "INR weaker than 105"},
+    {"id": "T-RES600", "var": "reserves", "op": "<", "level": 600, "kind": "any", "unit": "USD bn", "label": "Reserves below USD600bn"},
+    {"id": "T-CPI6", "var": "cpi_yoy", "op": ">", "level": 6.0, "kind": "duration", "min_months": 3, "unit": "% y/y", "label": "CPI >6% for 3+ months"}
+  ],
+  "n_paths": 1000,
+  "horizon": 24,
+  "seed": 20261025
+}

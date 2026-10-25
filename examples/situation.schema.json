@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "indiasim situation brief",
+  "description": "What an agent may set. Agents choose shocks, actor responses and thresholds; the ENGINE computes every macro number.",
+  "type": "object",
+  "required": ["title", "as_of", "shocks"],
+  "properties": {
+    "title": {"type": "string"}, "as_of": {"type": "string", "format": "date"}, "narrative": {"type": "string"},
+    "shocks": {"type": "array", "items": {"type": "object", "required": ["type", "start"], "properties": {
+      "type": {"enum": ["oil_escalation", "oil_deescalation", "global_tightening", "food_supply"]},
+      "start": {"type": "integer", "minimum": 1, "maximum": 36},
+      "premium": {"type": "number", "minimum": 0, "maximum": 120}, "forced_months": {"type": "integer", "minimum": 1},
+      "hazard_after": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}, "shortfall_pct": {"type": "number", "minimum": 0, "maximum": 20},
+      "freight_extra": {"type": "number"}, "crack_extra": {"type": "number"}, "risk_impulse": {"type": "number"},
+      "months": {"type": "integer", "minimum": 1}, "us10y": {"type": "number"}, "dxy_pct": {"type": "number"},
+      "risk": {"type": "number"}, "gdem": {"type": "number"}, "magnitude": {"type": "number"}}}},
+    "policies": {"type": "object", "description": "actor -> option; see config.POLICY_OPTIONS"},
+    "structure": {"type": "object", "properties": {"expectations": {"enum": ["adaptive", "anchored"]}, "fx_regime": {"enum": ["managed", "flexible"]}}},
+    "compare_policies": {"type": "object", "additionalProperties": {"type": "object"}},
+    "thresholds": {"type": "array", "items": {"type": "object", "required": ["id", "var", "op", "level", "kind"]}},
+    "n_paths": {"type": "integer", "minimum": 1, "maximum": 20000}, "horizon": {"type": "integer", "minimum": 6, "maximum": 36},
+    "seed": {"type": "integer"}
+  }
+}

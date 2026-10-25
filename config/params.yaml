@@ -1,0 +1,128 @@
+# Model parameters. Monthly frequency unless stated.
+# status: external = taken from / benchmarked to a published estimate (evidence id given);
+#         judgmental = expert judgement with a stated range; illustrative = placeholder that makes the
+#         demo run, NOT calibrated. No parameter here is estimated by this project.
+# dist: fixed (never sampled) | uniform | triangular (mode = value). Sampled ONCE per path (outer loop).
+version: params-0.3.0
+params:
+  # ---------------- global drivers ----------------
+  oil_kappa:        {value: 0.15, low: 0.08, high: 0.25, dist: triangular, status: judgmental, unit: "per month", desc: "Brent mean reversion toward regime anchor (half-life ~4 months)"}
+  oil_anchor:       {value: 82.0, low: 70.0, high: 92.0, dist: triangular, status: judgmental, unit: USD/bbl, desc: "Brent anchor when no disruption regime"}
+  oil_disrupt_prem: {value: 35.0, low: 20.0, high: 45.0, dist: triangular, status: judgmental, unit: USD/bbl, desc: "Anchor premium while baseline disruption regime persists (t0 implies ~35)"}
+  oil_gdem_beta:    {value: 3.0, low: 1.5, high: 5.0, dist: uniform, status: judgmental, unit: "USD/bbl per pp gdem", desc: "Demand-driven oil anchor shift"}
+  oil_sigma:        {value: 0.075, low: 0.06, high: 0.10, dist: uniform, status: external, unit: "log sd per month", desc: "Brent monthly volatility (calm); ~historical 7-10%"}
+  oil_sigma_stress: {value: 0.11, low: 0.08, high: 0.14, dist: uniform, status: judgmental, unit: "log sd per month", desc: "Brent volatility in disruption regime"}
+  oil_t_df:         {value: 5, dist: fixed, status: judgmental, unit: dof, desc: "Student-t tails on oil innovation (unit variance scaled)"}
+  crack_base:       {value: 18.0, dist: fixed, status: illustrative, unit: USD/bbl, desc: "Auto-fuel crack over Brent, no disruption"}
+  crack_disrupt:    {value: 4.0, low: 2.0, high: 10.0, dist: uniform, status: illustrative, unit: USD/bbl, desc: "Extra crack in disruption regime (calibrated so t0 OMC margin = -8.5)"}
+  freight_base:     {value: 1.5, dist: fixed, status: illustrative, unit: USD/bbl, desc: "Freight+insurance on landed crude"}
+  freight_disrupt:  {value: 1.5, low: 0.5, high: 3.0, dist: uniform, status: illustrative, unit: USD/bbl, desc: "War-risk premium in disruption regime"}
+  baseline_hazard:  {value: 0.12, low: 0.06, high: 0.25, dist: triangular, status: judgmental, unit: "prob per month", desc: "Monthly probability the baseline disruption regime ends"}
+  onset_hazard:     {value: 0.01, dist: fixed, status: judgmental, unit: "prob per month", desc: "Probability a new disruption regime starts once ended"}
+  us_anchor:        {value: 4.6, low: 4.0, high: 5.2, dist: uniform, status: judgmental, unit: "%", desc: "US10Y long-run anchor"}
+  us_kappa:         {value: 0.05, dist: fixed, status: judgmental, unit: "per month", desc: "US10Y mean reversion"}
+  us_sigma:         {value: 0.15, dist: fixed, status: external, unit: "pp per month", desc: "US10Y monthly sd (historical order of magnitude)"}
+  dxy_sigma:        {value: 0.018, dist: fixed, status: external, unit: "log sd per month", desc: "Dollar index monthly sd"}
+  risk_rho:         {value: 0.80, dist: fixed, status: judgmental, unit: "AR(1)", desc: "Risk-off persistence"}
+  risk_sigma:       {value: 0.45, dist: fixed, status: judgmental, unit: "z per month", desc: "Risk-off innovation sd"}
+  gdem_rho:         {value: 0.90, dist: fixed, status: judgmental, unit: "AR(1)", desc: "Global demand gap persistence"}
+  gdem_sigma:       {value: 0.30, dist: fixed, status: judgmental, unit: "pp per month", desc: "Global demand gap innovation sd"}
+  food_rho:         {value: 0.70, low: 0.55, high: 0.85, dist: uniform, status: judgmental, unit: "AR(1)", desc: "Food supply shock persistence"}
+  food_sigma:       {value: 1.5, dist: fixed, status: judgmental, unit: "pp annualised per month", desc: "Food shock innovation sd"}
+  # ---------------- external accounts (USD bn per month) ----------------
+  crude_vol0:       {value: 21.4, dist: fixed, status: external, unit: MMT/month, desc: "Crude import volume (Jul 2026 PPAC provisional)", evidence: E19}
+  bbl_per_t_crude:  {value: 7.33, dist: fixed, status: external, unit: bbl/tonne, desc: "Standard conversion"}
+  prod_vol0:        {value: 5.5, dist: fixed, status: external, unit: MMT/month, desc: "Petroleum product exports", evidence: E19}
+  bbl_per_t_prod:   {value: 7.6, dist: fixed, status: illustrative, unit: bbl/tonne, desc: "Lighter product conversion"}
+  other_energy0:    {value: 2.9, dist: fixed, status: illustrative, unit: USD bn/month, desc: "LNG + LPG/product imports at t0", evidence: E19}
+  other_energy_oilshare: {value: 0.6, dist: fixed, status: illustrative, unit: share, desc: "Share of other energy imports indexed to Brent"}
+  vol_elast_price:  {value: -0.02, low: -0.06, high: 0.0, dist: uniform, status: judgmental, unit: elasticity, desc: "Short-run price elasticity of crude import volume"}
+  vol_elast_act:    {value: 1.0, dist: fixed, status: judgmental, unit: elasticity, desc: "Crude volume vs activity gap"}
+  nonoil_bal0:      {value: -14.5, dist: fixed, status: illustrative, unit: USD bn/month, desc: "Non-oil merchandise balance (residual from Q1 BoP)", evidence: E05}
+  nonoil_gdem:      {value: 0.8, low: 0.4, high: 1.2, dist: uniform, status: judgmental, unit: "USD bn per pp gdem", desc: "Export response to world demand"}
+  nonoil_fx:        {value: 0.12, low: 0.05, high: 0.2, dist: uniform, status: judgmental, unit: "USD bn per 1% real depreciation (6m avg, lagged)", desc: "Non-oil balance response to real INR"}
+  nonoil_gap:       {value: 0.6, dist: fixed, status: judgmental, unit: "USD bn per 1% gap", desc: "Import demand from domestic activity"}
+  services0:        {value: 17.2, dist: fixed, status: external, unit: USD bn/month, desc: "Net services", evidence: E06}
+  services_gdem:    {value: 0.25, dist: fixed, status: judgmental, unit: "USD bn per pp gdem", desc: "Services exports vs world demand"}
+  remit0:           {value: 13.6, dist: fixed, status: external, unit: USD bn/month, desc: "Net secondary income", evidence: E07}
+  remit_oil:        {value: 0.15, low: 0.0, high: 0.3, dist: uniform, status: judgmental, unit: "elasticity to Brent, 6m lag", desc: "Gulf income offset: higher oil raises remittances with lag"}
+  prim0:            {value: -3.5, dist: fixed, status: external, unit: USD bn/month, desc: "Net primary income", evidence: E08}
+  prim_us:          {value: 0.15, dist: fixed, status: judgmental, unit: "USD bn per pp US10Y", desc: "Higher global yields raise income outgo"}
+  fdi0:             {value: 2.0, dist: fixed, status: external, unit: USD bn/month, desc: "Net FDI", evidence: E09}
+  fpi_base:         {value: -1.7, dist: fixed, status: illustrative, unit: USD bn/month, desc: "FPI intercept (calibrated so t0 FPI = -3.2 at central fpi_risk)"}
+  fpi_spread:       {value: 1.2, low: 0.5, high: 2.0, dist: uniform, status: judgmental, unit: "USD bn per pp (India10Y-US10Y)", desc: "Yield-spread sensitivity"}
+  fpi_risk:         {value: 1.5, low: 0.8, high: 2.5, dist: uniform, status: judgmental, unit: "USD bn per z risk-off", desc: "Risk-appetite sensitivity"}
+  fpi_dep:          {value: 0.8, low: 0.2, high: 1.5, dist: uniform, status: judgmental, unit: "USD bn per %/month expected depreciation", desc: "Momentum / expectations channel"}
+  fpi_gap:          {value: 0.5, dist: fixed, status: judgmental, unit: "USD bn per 1% gap", desc: "Growth attracts flows"}
+  ecb_other0:       {value: 3.7, dist: fixed, status: external, unit: USD bn/month, desc: "ECB + other investment", evidence: E09}
+  ecb_us:           {value: 0.6, dist: fixed, status: judgmental, unit: "USD bn per pp US10Y", desc: "ECB borrowing deterred by US yields"}
+  resid_other0:     {value: -3.8, dist: fixed, status: illustrative, unit: USD bn/month, desc: "Residual capital incl. errors & omissions (explicit plug to Q1 BoP)", evidence: E09}
+  fx_depth:         {value: 3.0, low: 1.5, high: 6.0, dist: triangular, status: illustrative, unit: "USD bn per 1% move", desc: "Unabsorbed pressure needed to move INR 1%"}
+  fx_sigma:         {value: 0.8, dist: fixed, status: judgmental, unit: "% per month", desc: "Idiosyncratic INR noise"}
+  res_nonusd_share: {value: 0.25, dist: fixed, status: judgmental, unit: share, desc: "Non-USD reserve share for valuation effects"}
+  res_floor_months: {value: 8.0, low: 7.0, high: 9.0, dist: uniform, status: judgmental, unit: "months of imports", desc: "Reserve level below which RBI scales back intervention"}
+  imports_month:    {value: 66.8, dist: fixed, status: derived, unit: USD bn/month, desc: "Import cover base (734/11 months)", evidence: E12}
+  # ---------------- monetary / financial ----------------
+  liq_wacr:         {value: 0.12, dist: fixed, status: illustrative, unit: "pp per Rs lakh crore deficit", desc: "WACR sensitivity to liquidity (bounded by corridor)"}
+  g10_repo:         {value: 0.6, low: 0.4, high: 0.8, dist: uniform, status: judgmental, unit: "pp per pp repo", desc: "10Y pass-through of policy-rate changes (term structure)"}
+  g10_kappa:        {value: 0.3, dist: fixed, status: judgmental, unit: "per month", desc: "10Y adjustment speed"}
+  g10_us:           {value: 0.25, low: 0.1, high: 0.4, dist: uniform, status: judgmental, unit: "pp per pp US10Y", desc: "US yield spillover"}
+  g10_fis:          {value: 0.25, dist: fixed, status: judgmental, unit: "pp per pp GDP FD slippage", desc: "Supply/credibility premium"}
+  g10_exp:          {value: 0.4, dist: fixed, status: judgmental, unit: "pp per pp expectations", desc: "Inflation-expectations premium"}
+  g10_sigma:        {value: 0.06, dist: fixed, status: judgmental, unit: "pp per month", desc: "10Y noise"}
+  r_neutral:        {value: 1.4, low: 0.9, high: 1.9, dist: uniform, status: judgmental, unit: "% real", desc: "Neutral real policy rate (range informed by RBI research, not verified here)"}
+  lend_spread:      {value: 3.5, dist: fixed, status: illustrative, unit: pp, desc: "Lending rate over WACR"}
+  credit_trend:     {value: 11.0, dist: fixed, status: illustrative, unit: "% y/y", desc: "Trend credit growth"}
+  credit_gap:       {value: 0.6, dist: fixed, status: judgmental, unit: "pp annual per 1% gap", desc: "Credit demand vs activity"}
+  credit_rate:      {value: 1.0, dist: fixed, status: judgmental, unit: "pp annual per pp lending rate change", desc: "Credit vs price of credit"}
+  credit_stress:    {value: 1.5, dist: fixed, status: judgmental, unit: "pp annual per stress unit", desc: "Bank supply tightening"}
+  stress_rho:       {value: 0.92, dist: fixed, status: judgmental, unit: "AR(1)", desc: "Credit-stress persistence"}
+  stress_rate:      {value: 0.04, dist: fixed, status: judgmental, unit: "per pp real lending rate above t0", desc: "Debt-service stress"}
+  stress_gap:       {value: 0.05, dist: fixed, status: judgmental, unit: "per 1% negative gap", desc: "Cash-flow stress"}
+  # ---------------- prices ----------------
+  w_food:           {value: 0.37, dist: fixed, status: illustrative, unit: weight, desc: "CPI food weight (base-2024 weights not verified)"}
+  w_energy:         {value: 0.08, dist: fixed, status: illustrative, unit: weight, desc: "CPI energy incl. petrol/diesel/LPG"}
+  w_core:           {value: 0.55, dist: fixed, status: illustrative, unit: weight, desc: "CPI core"}
+  energy_auto_share: {value: 0.6, dist: fixed, status: illustrative, unit: share, desc: "Petrol/diesel share of energy component; rest administered (LPG/electricity)"}
+  food_trend:       {value: 4.5, dist: fixed, status: judgmental, unit: "% annual", desc: "Food inflation trend"}
+  food_fuel:        {value: 0.06, low: 0.03, high: 0.10, dist: uniform, status: judgmental, unit: "pp m/m per 1% retail fuel change", desc: "Transport-cost pass-through to food"}
+  core_lambda:      {value: 0.6, dist: fixed, status: judgmental, unit: "persistence", desc: "Core m/m inflation persistence"}
+  core_gap:         {value: 0.15, low: 0.08, high: 0.25, dist: uniform, status: judgmental, unit: "pp annual per 1% gap", desc: "Phillips-curve slope"}
+  core_fx:          {value: 0.08, low: 0.04, high: 0.12, dist: uniform, status: external, unit: "per 1% (6m avg) depreciation", desc: "ERPT to core (implies ~0.2 long-run on core)"}
+  core_oil:         {value: 0.007, low: 0.003, high: 0.012, dist: uniform, status: external, unit: "per 1% landed crude Rs cost (6m avg)", desc: "Indirect oil cost pass-through to core; benchmarked to E24/E25"}
+  exp_theta:        {value: 0.05, dist: fixed, status: judgmental, unit: "per month", desc: "Adaptive expectations speed (anchored)"}
+  exp_theta_deanchor: {value: 0.15, dist: fixed, status: judgmental, unit: "per month", desc: "Speed after de-anchoring (headline >6 for 3 months)"}
+  # ---------------- real economy (monthly impulses into gap; gap persistence) ----------------
+  gap_rho:          {value: 0.88, low: 0.82, high: 0.92, dist: uniform, status: judgmental, unit: "AR(1) monthly", desc: "Output-gap persistence (QPM-type)"}
+  pot_growth:       {value: 6.5, low: 6.0, high: 7.0, dist: uniform, status: judgmental, unit: "% annual", desc: "Potential growth"}
+  a_rate:           {value: 0.04, low: 0.02, high: 0.06, dist: uniform, status: judgmental, unit: "per pp real rate gap (3m lag)", desc: "Interest-rate channel"}
+  a_hh_fuel:        {value: 0.5, low: 0.3, high: 0.8, dist: uniform, status: judgmental, unit: "per pp fuel real-income loss", desc: "Household real-income squeeze from fuel prices"}
+  fuel_budget_share: {value: 0.06, dist: fixed, status: illustrative, unit: share, desc: "Household fuel budget share"}
+  a_omc:            {value: 0.05, dist: fixed, status: judgmental, unit: "per % monthly GDP OMC loss", desc: "OMC loss -> capex deferral"}
+  a_input:          {value: 0.008, low: 0.004, high: 0.012, dist: uniform, status: judgmental, unit: "per 1% landed crude Rs cost change", desc: "Firms' input-cost squeeze"}
+  a_gdem:           {value: 0.05, dist: fixed, status: judgmental, unit: "per pp gdem", desc: "External demand"}
+  a_risk:           {value: 0.03, dist: fixed, status: judgmental, unit: "per z risk-off", desc: "Confidence / financial conditions"}
+  a_stress:         {value: 0.03, dist: fixed, status: judgmental, unit: "per stress unit", desc: "Credit supply"}
+  a_food:           {value: 0.015, dist: fixed, status: judgmental, unit: "per pp food shock", desc: "Rural real-income squeeze"}
+  a_fiscal:         {value: 0.3, low: 0.15, high: 0.45, dist: uniform, status: judgmental, unit: "per % monthly GDP capex change", desc: "Capex multiplier impulse"}
+  a_phys:           {value: 0.15, dist: fixed, status: judgmental, unit: "per % crude physical shortfall", desc: "Supply rationing hit"}
+  gap_sigma:        {value: 0.12, dist: fixed, status: judgmental, unit: "pp per month", desc: "Demand noise"}
+  # ---------------- fuel pricing & fiscal ----------------
+  litres_month:     {value: 13.5, dist: fixed, status: illustrative, unit: bn litres/month, desc: "Petrol+diesel consumption"}
+  vat_rate:         {value: 0.177, dist: fixed, status: illustrative, unit: share, desc: "Blended Delhi VAT (ad valorem)"}
+  dealer_margin:    {value: 3.8, dist: fixed, status: illustrative, unit: Rs/litre, desc: "Dealer commission"}
+  omc_normal_margin: {value: 2.0, dist: fixed, status: illustrative, unit: Rs/litre, desc: "Margin OMCs target under full pass-through"}
+  lpg_cyl_month:    {value: 20.0, dist: fixed, status: illustrative, unit: crore cylinders/month, desc: "Domestic LPG refills"}
+  lpg_price:        {value: 853.0, dist: fixed, status: illustrative, unit: Rs/cylinder, desc: "Domestic LPG retail (unverified)"}
+  tax_ratio:        {value: 0.073, dist: fixed, status: derived, unit: share of nominal GDP, desc: "Net tax / NGDP (28.7/393)", evidence: E23}
+  tax_buoy:         {value: 1.1, dist: fixed, status: judgmental, unit: elasticity, desc: "Tax buoyancy"}
+  fert_oil:         {value: 0.010, dist: fixed, status: illustrative, unit: "Rs lakh crore/month per USD10 Brent above t0", desc: "LNG-linked fertiliser subsidy sensitivity"}
+  fis_capex_cut:    {value: 0.5, dist: fixed, status: judgmental, unit: share, desc: "Share of projected overrun closed by capex cuts under 'hold target'"}
+  fy_issuance:      {value: 15.0, dist: fixed, status: illustrative, unit: Rs lakh crore/yr, desc: "Gross borrowing repricing base"}
+  fd_target_fy28:   {value: 4.1, dist: fixed, status: illustrative, unit: "% GDP", desc: "Assumed FY28 deficit target (not announced)"}
+  capex_month:      {value: 1.02, dist: fixed, status: derived, unit: Rs lakh crore/month, desc: "Central capex 12.2/12 (cap on cuts = 25%)", evidence: E23}
+  # ---------------- actor behaviour (sampled = behavioural variation, not model structure) ----------------
+  mpc_infl_coef:    {value: 1.0, low: 0.7, high: 1.5, dist: uniform, status: judgmental, unit: "pp per pp inflation gap", desc: "MPC reaction to inflation gap"}
+  mpc_gap_coef:     {value: 0.5, dist: fixed, status: judgmental, unit: "pp per pp growth gap", desc: "MPC reaction to growth gap"}
+  mpc_fx_trigger:   {value: 2.0, low: 1.5, high: 3.0, dist: uniform, status: judgmental, unit: "% 3m depreciation", desc: "FX-defence rule trigger"}
+  gov_loss_tolerance: {value: 1.0, low: 0.5, high: 1.5, dist: uniform, status: judgmental, unit: Rs lakh crore cumulative, desc: "Adaptive rule: OMC loss tolerated before pass-through"}

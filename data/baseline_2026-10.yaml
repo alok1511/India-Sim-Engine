@@ -1,0 +1,38 @@
+# Starting-state snapshot. t0 = October 2026 (as of 2026-10-25, Asia/Kolkata).
+# status: reported = taken from a dated source (see EVIDENCE.csv); derived = arithmetic on
+# reported values; assumed = model judgement / illustrative. Nothing here is "live data".
+snapshot_id: IN-2026-10
+as_of: "2026-10-25"
+t0_month: "2026-10"
+values:
+  brent:        {value: 116.7, unit: USD/bbl, status: reported, evidence: E15}
+  us10y:        {value: 5.2,   unit: "%",     status: reported, evidence: E18, note: "Sep-28 level; late-Oct unverified"}
+  dxy_log:      {value: 0.0,   unit: log-index (t0=0), status: assumed}
+  risk_off:     {value: 1.0,   unit: z-score, status: assumed, note: "elevated: FPI equity outflows ~USD30bn YTD (E12)"}
+  gdem:         {value: 0.0,   unit: "% gap world demand", status: assumed}
+  food_shock:   {value: 3.2,   unit: "pp annualised food inflation above trend", status: derived, evidence: E13, note: "7.74 food CPI vs 4.5 trend"}
+  disrupt:      {value: 1,     unit: regime flag, status: assumed, note: "ongoing Gulf supply-disruption regime (E15, E21)"}
+  inr:          {value: 97.0,  unit: INR per USD, status: reported, evidence: E11, note: "96.78 on 7 Oct; ~97 assumed for late Oct"}
+  reserves:     {value: 734.6, unit: USD bn, status: reported, evidence: E10}
+  repo:         {value: 5.50,  unit: "% p.a.", status: reported, evidence: E01}
+  liq:          {value: 1.0,   unit: "Rs lakh crore (surplus +)", status: assumed}
+  g10:          {value: 7.46,  unit: "%", status: reported, evidence: E17}
+  retail_fuel:  {value: 97.62, unit: Rs/litre, status: derived, evidence: E22, note: "Delhi blend 35% petrol 102.12 / 65% diesel 95.20"}
+  excise:       {value: 1.05,  unit: Rs/litre, status: derived, evidence: E20, note: "blend of petrol Rs3 / diesel Rs0"}
+  cpi_yoy:      {value: 5.54,  unit: "% y/y", status: reported, evidence: E13, note: "Sep 2026 print used as t0"}
+  food_yoy:     {value: 7.74,  unit: "% y/y", status: reported, evidence: E13}
+  energy_yoy:   {value: 3.0,   unit: "% y/y", status: assumed, note: "proxy; MoSPI fuel group not read"}
+  core_yoy:     {value: 4.43,  unit: "% y/y", status: derived, note: "backed out from headline with assumed weights"}
+  exp_infl:     {value: 5.0,   unit: "% 1y ahead (effective)", status: assumed}
+  gap:          {value: 0.3,   unit: "% of potential", status: assumed, evidence: E14}
+  credit_yoy:   {value: 11.0,  unit: "% y/y", status: assumed}
+  stress:       {value: 0.0,   unit: index, status: assumed}
+  ngdp_annual:  {value: 393.0, unit: Rs lakh crore (FY27), status: assumed, note: "approx; BE nominal GDP not read"}
+  debt_ratio:   {value: 55.6,  unit: "% GDP (central)", status: reported, evidence: E23}
+  fd_target:    {value: 4.3,   unit: "% GDP FY27 BE", status: reported, evidence: E23}
+  omc_margin:   {value: -8.5,  unit: Rs/litre, status: derived, evidence: E21}
+  lpg_loss_cyl: {value: 300,   unit: Rs/cylinder, status: reported, evidence: E21}
+# Approximate Brent monthly pre-history (oldest first, Nov 2025 -> Oct 2026). Partially sourced (E16, E19);
+# months without a source are interpolations and are labelled synthetic in the UI.
+brent_history: [64, 62, 66, 70, 100, 108, 105, 88, 82, 92, 110, 116.7]
+brent_history_status: "approximate; Apr-Jun from E16 chronology, Jul from E19 basket; others interpolated"

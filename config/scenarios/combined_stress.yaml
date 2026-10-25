@@ -1,0 +1,12 @@
+id: combined_stress
+name: Simultaneous stress - oil escalation + global tightening
+version: 1
+description: >
+  Oil escalation and global tightening together from Nov 2026. Common shocks enter once each,
+  through their own channels; correlation of residual innovations is not added on top.
+shocks:
+  - {type: oil_escalation, start: 1, premium: 40.0, forced_months: 3, hazard_after: 0.20,
+     shortfall_pct: 3.0, freight_extra: 6.0, crack_extra: 8.0, risk_impulse: 1.0}
+  - {type: global_tightening, start: 1, months: 9, us10y: 0.8, dxy_pct: 5.0, risk: 1.0, gdem: -1.0}
+policies: {gov_fuel: freeze_omc_absorb, gov_fiscal: accommodate, rbi_mpc: inflation_targeting, rbi_fx: heavy, rbi_steril: half}
+structure: {expectations: adaptive, fx_regime: managed}

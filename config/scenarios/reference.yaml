@@ -1,0 +1,10 @@
+id: reference
+name: Reference path (current disruption regime persists, resolves at random)
+version: 1
+description: >
+  No new shock. Starts from the October 2026 state: Brent ~USD117 under an ongoing Gulf
+  supply-disruption regime that ends with a monthly hazard (central 12%/month). This is the
+  comparison baseline, not a forecast.
+shocks: []
+policies: {gov_fuel: freeze_omc_absorb, gov_fiscal: accommodate, rbi_mpc: inflation_targeting, rbi_fx: heavy, rbi_steril: half}
+structure: {expectations: adaptive, fx_regime: managed}

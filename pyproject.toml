@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "indiasim"
+version = "0.3.0"
+description = "India Economic Scenario and Strategic Risk Simulator (illustrative, transparent)"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "pandas>=2.0", "pyyaml>=6.0", "streamlit>=1.35", "plotly>=5.20", "scipy>=1.11"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+indiasim = "indiasim.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
