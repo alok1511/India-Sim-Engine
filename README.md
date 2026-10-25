@@ -11,7 +11,7 @@ replay, and compare.
 ## Quick start (about 2 minutes, no API keys, no accounts)
 
 ```bash
-git clone <your-repo-url> indiasim && cd indiasim
+git clone https://github.com/alok1511/India-Sim-Engine.git && cd India-Sim-Engine
 python -m venv .venv && source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 streamlit run app/streamlit_app.py                        # opens http://localhost:8501

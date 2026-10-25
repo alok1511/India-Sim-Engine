@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "indiasim"
 version = "0.3.0"
 description = "India Economic Scenario and Strategic Risk Simulator (illustrative, transparent)"
+license = {text = "MIT"}
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.26", "pandas>=2.0", "pyyaml>=6.0", "streamlit>=1.35", "plotly>=5.20", "scipy>=1.11"]
 
