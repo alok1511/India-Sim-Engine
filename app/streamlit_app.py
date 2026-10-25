@@ -33,6 +33,17 @@ from indiasim.insights import overview_takeaways, compare_takeaways  # noqa: E40
 
 st.set_page_config(page_title="India Scenario & Risk Simulator", layout="wide", page_icon=":material/monitoring:")
 
+
+def _st_version():
+    try:
+        return tuple(int(x) for x in st.__version__.split(".")[:2])
+    except Exception:  # noqa: BLE001
+        return (0, 0)
+
+
+# Streamlit >= 1.50 uses width="stretch"; older releases only understand use_container_width=True.
+WIDE = {"width": "stretch"} if _st_version() >= (1, 50) else {"use_container_width": True}
+
 C = {"blue": "#0072B2", "orange": "#E69F00", "sky": "#56B4E9", "green": "#009E73", "verm": "#D55E00", "purple": "#CC79A7", "grey": "#7F7F7F", "black": "#222"}
 UNITS = {"brent": "USD/bbl", "inr": "INR per USD", "reserves": "USD bn", "repo": "%", "cpi_yoy": "% y/y", "core_yoy": "% y/y", "food_yoy": "% y/y",
          "gdp_yoy": "% y/y (quarterly)", "gap": "% of potential", "fd_proj": "% of GDP (FY projection)", "g10": "%", "retail_fuel": "Rs/litre",
@@ -141,7 +152,7 @@ def sidebar() -> RunSpec:
     errs = spec.validate()
     if errs:
         sb.error("; ".join(errs))
-    run_btn = sb.button("Run simulation", type="primary", width="stretch")
+    run_btn = sb.button("Run simulation", type="primary", **WIDE)
     with sb.expander("Save / load configuration"):
         st.download_button("Download config JSON", save_config(spec), file_name=f"config_{spec_hash(spec)}.json", mime="application/json")
         up = st.file_uploader("Load config JSON", type="json")
@@ -219,7 +230,7 @@ def fan(res, var, title=None, reps=None, height=300, extra=None):
 
 
 def show_fig(fig, spec, key=None):
-    st.plotly_chart(fig, width="stretch", key=key)
+    st.plotly_chart(fig, **WIDE, key=key)
     st.caption(f"Scope: {scope_line(spec)}")
 
 
@@ -264,7 +275,7 @@ def view_overview(res):
         rows.append({"event": th.describe(), "frequency": e["frequency"], "95% sampling CI": f"{e['ci95'][0]:.3f}-{e['ci95'][1]:.3f}",
                      "median first month": month_label(int(e["summary"]["median_first_passage_month"])) if np.isfinite(e["summary"]["median_first_passage_month"]) else "-",
                      "not recovered by horizon (share of breaches)": e["summary"]["share_not_recovered_given_breach"], "label": "conditional model frequency"})
-    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True,
+    st.dataframe(pd.DataFrame(rows), **WIDE, hide_index=True,
                  column_config={"frequency": st.column_config.ProgressColumn(format="%.3f", min_value=0, max_value=1)})
     with st.expander("Plain-language definitions"):
         for k, v in GLOSSARY.items():
@@ -312,7 +323,7 @@ def view_causal_map():
         fig.add_annotation(x=c * 2.0, y=1.2, text=f"<b>{lab}</b>", showarrow=False, font=dict(size=11))
     fig.update_layout(height=820, xaxis=dict(visible=False, range=[-0.5, 12.5]), yaxis=dict(visible=False), template="plotly_white",
                       margin=dict(l=0, r=0, t=10, b=0), legend=dict(orientation="h", y=1.04))
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, **WIDE)
     ids = [f"{m['id']}: {', '.join(m['src'])} -> {m['dst']}" for m in mech]
     pick = st.selectbox("Drill into a link", ids)
     m = mech[ids.index(pick)]
@@ -326,10 +337,10 @@ def view_causal_map():
     with c2:
         if m.get("params"):
             st.dataframe(pd.DataFrame([{"param": p_, "value": pc[p_]["value"], "range": f"{pc[p_].get('low', '')}-{pc[p_].get('high', '')}",
-                                        "status": pc[p_]["status"], "unit": pc[p_].get("unit")} for p_ in m["params"] if p_ in pc]), hide_index=True, width="stretch")
+                                        "status": pc[p_]["status"], "unit": pc[p_].get("unit")} for p_ in m["params"] if p_ in pc]), hide_index=True, **WIDE)
         if m.get("evidence"):
             st.dataframe(ev[ev.evidence_id.isin(m["evidence"])][["evidence_id", "item", "value", "publisher", "url", "publication_date", "kind"]],
-                         hide_index=True, width="stretch", column_config={"url": st.column_config.LinkColumn()})
+                         hide_index=True, **WIDE, column_config={"url": st.column_config.LinkColumn()})
 
 
 def view_playback(res):
@@ -374,7 +385,7 @@ def view_playback(res):
             fig = fan(one, v, height=210)
             fig.add_vline(x=month_label(month), line_dash="dot", line_color=C["verm"])
             fig.update_layout(showlegend=False)
-            st.plotly_chart(fig, width="stretch", key=f"pb_{v}")
+            st.plotly_chart(fig, **WIDE, key=f"pb_{v}")
         st.markdown("**Causal chain inspector**")
         cand = [e for e in events if e["t"] <= month and e["type"] in ("state_change", "decision", "constraint", "regime")]
         if cand:
@@ -408,11 +419,11 @@ def view_playback(res):
             with c:
                 f = fan(o, v, height=230, extra={"branch": (o.meta["months"], alt.hist[v][P:, 0], C["verm"])})
                 f.update_layout(showlegend=False)
-                st.plotly_chart(f, width="stretch", key=f"br_{v}")
+                st.plotly_chart(f, **WIDE, key=f"br_{v}")
         bt = pd.DataFrame({"original": d["burden_original"], "branch": d["burden_branch"]})
         bt["difference"] = bt["branch"] - bt["original"]
         st.markdown("**Who absorbs the cost (this path)**")
-        st.dataframe(bt.round(2), width="stretch")
+        st.dataframe(bt.round(2), **WIDE)
         st.caption("What could interrupt the branch: actor reversal, regime change in oil, or assumptions in the register (Analyst tools). "
                    "Evidence that would support it: watch the signposts linked to this scenario.")
 
@@ -426,7 +437,7 @@ def view_risk(res):
         return
     df = pd.DataFrame([{**{k: v for k, v in th.__dict__.items()}} for th in DEFAULT_THRESHOLDS])
     st.markdown("**Threshold definitions** (edit, add rows; var must be a model variable; kind: any | endpoint | duration; observe: monthly | quarterly | fy_end)")
-    ed = st.data_editor(df, num_rows="dynamic", width="stretch", key="th_ed")
+    ed = st.data_editor(df, num_rows="dynamic", **WIDE, key="th_ed")
     ths = []
     for _, r in ed.iterrows():
         try:
@@ -441,15 +452,15 @@ def view_risk(res):
         rows.append({"id": th.id, "event": th.describe(), "frequency": e["frequency"], "CI95": f"{e['ci95'][0]:.3f}-{e['ci95'][1]:.3f}",
                      "breached paths": s["n_breached"], "recovered": s["n_recovered"], "not recovered (censored)": s["n_not_recovered_by_horizon"],
                      "median months to recover": s["median_recovery_months_among_recovered"], "mean months beyond (if breached)": s["mean_months_beyond_given_breach"]})
-    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+    st.dataframe(pd.DataFrame(rows), **WIDE, hide_index=True)
     if ths:
         c1, c2 = st.columns(2)
         pick = c1.selectbox("Threshold for timing charts", [t.id for t in ths])
         e = evs[pick]
         with c1:
-            st.plotly_chart(hist_fig(e["first_passage"], f"First passage month index ({pick})", "months after Oct 2026"), width="stretch")
+            st.plotly_chart(hist_fig(e["first_passage"], f"First passage month index ({pick})", "months after Oct 2026"), **WIDE)
         with c2:
-            st.plotly_chart(hist_fig(e["max_duration"], f"Longest consecutive breach ({pick})", "months", C["verm"]), width="stretch")
+            st.plotly_chart(hist_fig(e["max_duration"], f"Longest consecutive breach ({pick})", "months", C["verm"]), **WIDE)
         jsel = st.multiselect("Joint stress: all of these in the SAME month (monthly variables)", [t.id for t in ths if t.observe == "monthly"],
                               default=[t.id for t in ths if t.observe == "monthly"][:2])
         if len(jsel) >= 2:
@@ -463,10 +474,10 @@ def view_risk(res):
     adverse = "low" if metric.startswith("min") else "high"
     es = expected_shortfall(m[metric], alpha, adverse)
     c3.metric(f"Expected shortfall ({int(alpha * 100)}% worst paths)", f"{es:.2f}", help="Mean of the worst tail of path outcomes; conditional on the model")
-    st.plotly_chart(hist_fig(m[metric], f"Distribution of {metric} across paths", metric), width="stretch")
+    st.plotly_chart(hist_fig(m[metric], f"Distribution of {metric} across paths", metric), **WIDE)
     st.markdown("#### Sampling convergence")
     if ths:
-        st.dataframe(pd.DataFrame(convergence(res, ths[0])).astype({"n": str}), hide_index=True, width="stretch")
+        st.dataframe(pd.DataFrame(convergence(res, ths[0])).astype({"n": str}), hide_index=True, **WIDE)
         st.caption("Estimates should stabilise as n grows and the two halves should agree within ~2 standard errors. A narrow MC error says nothing about whether assumptions are right.")
     st.markdown("#### Sensitivity: which uncertain parameters drive this metric?")
     if spec.param_mode == "sampled":
@@ -474,7 +485,7 @@ def view_risk(res):
         if not sr.empty:
             f = go.Figure(go.Bar(x=sr["spearman"], y=sr["param"], orientation="h", marker_color=[C["verm"] if v > 0 else C["blue"] for v in sr["spearman"]]))
             f.update_layout(height=340, template="plotly_white", margin=dict(l=10, r=10, t=20, b=10), xaxis_title="Spearman rank correlation with " + metric)
-            st.plotly_chart(f, width="stretch")
+            st.plotly_chart(f, **WIDE)
     else:
         st.caption("Switch parameter uncertainty to 'sampled' to see sensitivity rankings.")
     st.markdown("#### Model-structure comparison (same seeds)")
@@ -488,7 +499,7 @@ def view_risk(res):
                 rows.append({"expectations": e_, "fx_regime": f_, "CPI>6% any": evaluate_threshold(r2, DEFAULT_THRESHOLDS[0])["frequency"],
                              "INR>100 any": evaluate_threshold(r2, DEFAULT_THRESHOLDS[2])["frequency"], "median peak CPI": np.nanmedian(mm["peak_cpi"]),
                              "median peak INR": np.nanmedian(mm["peak_inr"]), "median reserve trough": np.nanmedian(mm["min_reserves"])})
-        st.dataframe(pd.DataFrame(rows).round(3), hide_index=True, width="stretch")
+        st.dataframe(pd.DataFrame(rows).round(3), hide_index=True, **WIDE)
         st.caption("Differences across structures are model uncertainty. They are typically larger than Monte Carlo sampling error.")
     with st.expander("Judgment-weighted mixture across scenarios (optional)"):
         st.caption("Only with explicit weights you set. Equal weights are NOT neutral evidence.")
@@ -521,11 +532,11 @@ def view_strategy(res):
         st.caption(f"Comparison context: base run {h}; bundles differ ONLY in: " + "; ".join(f"{k} -> {BUNDLES.get(k) or 'base policies'}" for k in cs["results"]))
         tbl = pd.DataFrame([{k: v for k, v in r.items() if k != "burden"} for r in cs["table"]]).set_index("bundle")
         show = [c for c in tbl.columns if "(median)" in c or "paired" in c]
-        st.dataframe(tbl[show].T.round(2), width="stretch")
+        st.dataframe(tbl[show].T.round(2), **WIDE)
         for t in compare_takeaways(cs):
             st.markdown(f"- {t}")
         st.markdown("**Who absorbs the cost** (medians across paths)")
-        st.dataframe(pd.DataFrame({r["bundle"]: r["burden"] for r in cs["table"]}).round(2), width="stretch")
+        st.dataframe(pd.DataFrame({r["bundle"]: r["burden"] for r in cs["table"]}).round(2), **WIDE)
         f = go.Figure()
         for (name, mtr), col in zip(cs["metrics"].items(), [C["blue"], C["orange"], C["green"], C["verm"], C["purple"], C["sky"], C["black"], C["grey"]] * 2):
             x, y = mtr["peak_cpi"], mtr["min_gdp_yoy"]
@@ -535,7 +546,7 @@ def view_strategy(res):
                                    error_y=dict(type="data", symmetric=False, array=[np.nanpercentile(y, 90) - np.nanmedian(y)], arrayminus=[np.nanmedian(y) - np.nanpercentile(y, 10)])))
         f.update_layout(height=430, template="plotly_white", xaxis_title="Peak headline CPI (% y/y) - lower is better",
                         yaxis_title="Weakest quarterly GDP growth (% y/y) - higher is better", showlegend=False, title="Trade-off: inflation vs growth (median, P10-P90 bars)")
-        st.plotly_chart(f, width="stretch")
+        st.plotly_chart(f, **WIDE)
         st.caption(f"Scope: {scope_line(spec)}")
 
 
@@ -545,7 +556,7 @@ def view_tools(res):
     t1, t2, t3, t4, t5, t6 = st.tabs(["Key assumptions", "Competing hypotheses", "Signposts", "Premortem / red team", "Reverse stress test", "After-action review"])
     with t1:
         ka = yaml.safe_load((CONFIG / "analysis" / "assumptions.yaml").read_text())["items"]
-        st.data_editor(pd.DataFrame(ka), num_rows="dynamic", width="stretch", key="ka_ed")
+        st.data_editor(pd.DataFrame(ka), num_rows="dynamic", **WIDE, key="ka_ed")
         st.caption("test_param links an assumption to the sensitivity ranking in the Risk lab. Edits live in this session; export via the Evidence tab report.")
     with t2:
         ach = yaml.safe_load((CONFIG / "analysis" / "ach.yaml").read_text())
@@ -553,20 +564,20 @@ def view_tools(res):
         hs = ach["hypotheses"]
         st.write({k: f"{v['name']} (scenario: {v['scenario']})" for k, v in hs.items()})
         df = pd.DataFrame(ach["evidence"])
-        ed = st.data_editor(df, num_rows="dynamic", width="stretch", key="ach_ed")
+        ed = st.data_editor(df, num_rows="dynamic", **WIDE, key="ach_ed")
         score = {"CC": 2, "C": 1, "N": 0, "I": -1, "II": -2}
         inc = {h: int(sum(1 for v in ed[h] if v in ("I", "II")) + sum(1 for v in ed[h] if v == "II")) for h in hs}
         diag = ed[list(hs)].apply(lambda r: float(np.std([score.get(x, 0) for x in r])), axis=1)
         st.markdown("**Inconsistency count** (weighted; II counts double). Lower = harder to reject. NOT a probability.")
         st.write(inc)
         st.markdown("**Diagnostic value of each evidence item** (spread of scores across hypotheses; 0 = does not discriminate)")
-        st.dataframe(pd.DataFrame({"evidence": ed["item"], "diagnosticity": diag.round(2)}), hide_index=True, width="stretch")
+        st.dataframe(pd.DataFrame({"evidence": ed["item"], "diagnosticity": diag.round(2)}), hide_index=True, **WIDE)
         st.caption("Focus on disconfirming evidence. Related items (e.g. the same attack reported twice) should not be double counted.")
     with t3:
         sg = yaml.safe_load((CONFIG / "analysis" / "signposts.yaml").read_text())
         st.warning(f"Dated snapshot entered manually on {sg['snapshot_date']} - NOT live status. Edit 'snapshot' to update.")
         df = pd.DataFrame(sg["items"])
-        ed = st.data_editor(df, width="stretch", key="sig_ed")
+        ed = st.data_editor(df, **WIDE, key="sig_ed")
 
         def status(r):
             try:
@@ -576,7 +587,7 @@ def view_tools(res):
                 return "TRIGGERED (snapshot)" if hit else "not triggered (snapshot)"
             except Exception:  # noqa: BLE001
                 return "manual check"
-        st.dataframe(pd.DataFrame({"indicator": ed["indicator"], "status": ed.apply(status, axis=1), "scenarios": ed["scenarios"]}), hide_index=True, width="stretch")
+        st.dataframe(pd.DataFrame({"indicator": ed["indicator"], "status": ed.apply(status, axis=1), "scenarios": ed["scenarios"]}), hide_index=True, **WIDE)
     with t4:
         pm = yaml.safe_load((CONFIG / "analysis" / "premortem.yaml").read_text())
         for k in ("prompts", "model_weaknesses", "strongest_countercase", "missing_actors"):
@@ -597,16 +608,16 @@ def view_tools(res):
             pg = {"gov_fuel": ["freeze_omc_absorb", "full_passthrough", "freeze_budget_comp"]} if with_pol else None
             rs = reverse_stress(spec, [Threshold("c1", v1, o1, l1, "any"), Threshold("c2", v2, o2, l2, "any")], n_paths=nrs, policy_grid=pg)
             st.markdown(f"Tested {rs['tested']} combinations ({rs['mode']}). Conditions: {rs['conditions']}. **{rs['label']}**")
-            st.dataframe(pd.DataFrame(rs["pathways"]).head(40), width="stretch", hide_index=True)
+            st.dataframe(pd.DataFrame(rs["pathways"]).head(40), **WIDE, hide_index=True)
     with t6:
         st.caption("State what a policy was meant to achieve; compare with simulated outcomes for the CURRENT run.")
         c1, c2 = st.columns(2)
         cpi_goal = c1.number_input("Intent: peak CPI below", value=6.0)
         gdp_goal = c2.number_input("Intent: weakest GDP quarter above", value=6.0)
         aa = after_action(res, {"peak_cpi": ("<", cpi_goal), "min_gdp_yoy": (">", gdp_goal)})
-        st.dataframe(pd.DataFrame(aa["intent_vs_outcome"]).round(3), hide_index=True, width="stretch")
+        st.dataframe(pd.DataFrame(aa["intent_vs_outcome"]).round(3), hide_index=True, **WIDE)
         st.markdown("**Trade-offs (median across paths)**")
-        st.dataframe(pd.Series(aa["trade_offs"]).round(2).rename("value"), width="stretch")
+        st.dataframe(pd.Series(aa["trade_offs"]).round(2).rename("value"), **WIDE)
         st.markdown("**Follow-up questions**")
         for q in aa["follow_up"]:
             st.markdown(f"- {q}")
@@ -621,21 +632,21 @@ def view_evidence(res):
     with t1:
         pc = load_params()["params"]
         st.dataframe(pd.DataFrame([{"name": k, **{f: v.get(f) for f in ("value", "low", "high", "dist", "status", "unit", "desc", "evidence")}} for k, v in pc.items()]),
-                     width="stretch", hide_index=True)
+                     **WIDE, hide_index=True)
     with t2:
         ev = pd.read_csv(DATA / "EVIDENCE.csv")
-        st.dataframe(ev, width="stretch", hide_index=True, column_config={"url": st.column_config.LinkColumn()})
+        st.dataframe(ev, **WIDE, hide_index=True, column_config={"url": st.column_config.LinkColumn()})
         b = load_baseline()
         st.markdown("**Starting state (t0 snapshot)**")
-        st.dataframe(pd.DataFrame([{"var": k, **v} for k, v in b["values"].items()]), width="stretch", hide_index=True)
+        st.dataframe(pd.DataFrame([{"var": k, **v} for k, v in b["values"].items()]), **WIDE, hide_index=True)
     with t3:
         mech = load_mechanisms()["links"]
         st.dataframe(pd.DataFrame([{"id": m["id"], "implemented": m["implemented"], "from": ", ".join(m["src"]), "to": m["dst"], "kind": m["kind"], "lag": m["lag"],
                                     "description": m["desc"], "counterforces": m.get("counter"), "invalidation": m.get("invalid")} for m in mech]),
-                     width="stretch", hide_index=True)
+                     **WIDE, hide_index=True)
     with t4:
         ch = accounting_checks(res)
-        st.dataframe(pd.DataFrame(ch), width="stretch", hide_index=True)
+        st.dataframe(pd.DataFrame(ch), **WIDE, hide_index=True)
         st.markdown("**Correlation matrices (driver innovations)**")
         st.write(CORR_REPORTS)
     with t5:

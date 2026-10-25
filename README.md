@@ -4,11 +4,21 @@ A transparent, interactive simulation engine for exploring how shocks and policy
 economy: introduce a shock, explore paths, read a path's causal sequence, inspect actor decisions, change a decision,
 replay, and compare.
 
-> **Status: illustrative and unvalidated.** Implementation and accounting checks pass (62 tests). Parameters are
+> **Status: illustrative and unvalidated.** Implementation, accounting and Python/JS parity checks pass (79 tests). Parameters are
 > judgmental or illustrative; no out-of-sample evaluation has been run. Percentages are *conditional model frequencies*,
 > not forecast probabilities. The starting state is a dated snapshot (2026-10-25), not live data.
 
-## Quick start (about 2 minutes, no API keys, no accounts)
+## Easiest way: open the app in a browser
+
+Double-click **`web/India-Sim-Engine.html`** (or open it on an iPad). No install, no Python, no terminal. It runs the
+full simulation engine in the browser, with five guided chapters: Today, What if, One future, Compare choices, Learn.
+Fonts load from Google Fonts when online; everything else works offline.
+
+The browser engine (`web/engine.js`) is a line-by-line port of the Python engine. `tests/test_js_parity.py` proves
+they agree to about one part in a billion on every variable when given the same inputs. After changing the model or
+config, rebuild the page with `python web/build.py`.
+
+## Python quick start (for the CLI, tests and the agent-team interface)
 
 ```bash
 git clone https://github.com/alok1511/India-Sim-Engine.git && cd India-Sim-Engine
@@ -26,7 +36,7 @@ indiasim trace --scenario oil_escalation --path 169 --branch 2:gov_fuel=full_pas
 indiasim compare --scenario oil_escalation --bundle "status quo:" --bundle "pass-through:gov_fuel=full_passthrough"
 indiasim stress --scenario reference --cond "inr>105" --cond "cpi_yoy>6.5"
 indiasim situation --file examples/situation_hormuz_closure.json --out runs/hormuz
-python -m pytest                                          # 62 passed, 1 skipped (historical evaluation not run)
+python -m pytest                                          # 79 passed, 1 skipped (historical evaluation not run)
 ```
 
 ## What is inside
@@ -38,7 +48,8 @@ python -m pytest                                          # 62 passed, 1 skipped
 | `src/indiasim/risk.py` | Thresholds, first passage, duration, recovery (censoring), joint stress, ES, convergence, sensitivity, mixtures |
 | `src/indiasim/analysis.py` | Branch/replay with matched draws, strategy comparison, cost absorption, reverse stress, after-action |
 | `src/indiasim/checks.py` | Accounting, unit and bound checks with stated boundaries |
-| `app/streamlit_app.py` | Seven views: Overview, Causal map, Playback, Risk lab, Strategy comparison, Analyst tools, Evidence |
+| `web/` | **Browser app** (single HTML file), JS engine port, bundler |
+| `app/streamlit_app.py` | Older Streamlit interface (seven views): Overview, Causal map, Playback, Risk lab, Strategy comparison, Analyst tools, Evidence |
 | `config/` | Parameters (status-labelled), mechanisms (55 implemented + 10 visible gaps), 6 scenarios, analyst registers |
 | `data/` | Baseline snapshot (2026-10-25) and `EVIDENCE.csv` (27 dated sources) |
 | `docs/` | MODEL_SPEC, REQUIREMENTS, DECISIONS, TEST_RESULTS, USER_GUIDE, BACKLOG, PROJECT_STATE |

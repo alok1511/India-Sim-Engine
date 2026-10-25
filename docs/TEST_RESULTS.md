@@ -1,6 +1,13 @@
 # Test results (run 2026-10-25, Python 3.13, numpy 2.5, Streamlit 1.66, Linux)
 
-Command: `python -m pytest -v` -> **62 passed, 1 skipped (AT-16 NOT RUN)** in ~30s. Plus `indiasim check` (all 6 scenarios: accounting PASS, reproducible True).
+Command: `python -m pytest -v` -> **79 passed, 1 skipped (AT-16 NOT RUN)** in ~45s (62 model tests + 17 browser-engine parity tests).
+
+**Browser engine parity (added 2026-10-25):** `web/engine.js` reproduces the Python engine on every variable, month and path to
+1e-9 relative tolerance, across all 6 scenarios, all fuel/MPC/FX/sterilisation/fiscal options, both structures, branch overrides,
+stochastic (injected draws) and deterministic modes. A mutation test (scaling one coefficient by 1+1e-7) is caught at 175x the
+tolerance. The browser's own random streams give statistically equivalent futures (e.g. oil escalation, 2,000 paths: CPI>6% in
+38.8% vs Python 38.0%; median rupee peak 104.7 vs 104.4). Page checked in headless Chromium at 1366px, 820px (iPad) and 390px
+(phone, dark mode): no console errors, no horizontal scroll; all chapters, story replay, comparison and stress search exercised. Plus `indiasim check` (all 6 scenarios: accounting PASS, reproducible True).
 
 ## Acceptance tests (brief section 13)
 
